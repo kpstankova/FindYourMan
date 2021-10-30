@@ -2,9 +2,9 @@
   "name": "sebiz-2021-22",
   "version": "1.0.0",
   "description": "project for the Systems for E-Bussiness course in FMI",
-  "main": "dist/index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "tsc && node dist/index.js",
+    "start": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,10 +28,11 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.4",
     "mongoose": "^5.11.19",
-    "nodemon": "^2.0.7",
+    "nodemon": "^2.0.14",
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "ts-node": "^10.4.0"
   }
 }
