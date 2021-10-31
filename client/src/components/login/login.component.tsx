@@ -6,20 +6,24 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { StoreState } from '../../redux/root-reducer';
 import { Dispatch } from "redux";
 import { selectForgotPasswordModal, selectLoginModal, selectRegisterAsRoleModal, selectRegisterModal } from '../../redux/modal-visibility/modal.selectors';
-import { IResetToggles, IToggleLogin, IToggleRegister, TModalReducerActions } from '../../redux/modal-visibility/modal.actions';
+import { IResetToggles, IToggleLogin, IToggleRegister, IToggleRegisterAsRole, TModalReducerActions } from '../../redux/modal-visibility/modal.actions';
 import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
 import Backdrop from '@material-ui/core/Backdrop';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './login.styles.scss'
 
-const LoginModal: React.FC<LoginModalProps> = ({...props}) => {
-    const { toggleRegisterAsRoleModal, toggleRegisterModal, toggleForgotPasswordModal, toggleLoginModal, resetTogglesModalAction, toggleLogin, toggleRegister } = props;
+const LoginModalComponent: React.FC<LoginModalProps> = ({...props}) => {
+    const { toggleForgotPasswordModal, toggleLoginModal, resetTogglesModalAction, toggleRegisterAsRoleModalAction } = props;
 
     const styles = dialogStyles();
 
     const handleClose = () => {
         resetTogglesModalAction();
+    }
+
+    const handleOpenRegisterWrapper = () => {
+        toggleRegisterAsRoleModalAction();
     }
 
     return (
@@ -93,7 +97,7 @@ const LoginModal: React.FC<LoginModalProps> = ({...props}) => {
                         </div>
                         <div className='hyperlinks'>
                             <span>No account yet? </span>
-                            <Link className='hyperlink'  to={'/'}>Register</Link>
+                            <Link className='hyperlink'  to={'/'} onClick={handleOpenRegisterWrapper}>Register</Link>
                         </div>
                     </div>
                 
@@ -106,22 +110,19 @@ const LoginModal: React.FC<LoginModalProps> = ({...props}) => {
     );
 }
 
-const mapStateToProps = (state: StoreState): { toggleForgotPasswordModal: boolean, toggleRegisterModal: boolean, toggleLoginModal: boolean, toggleRegisterAsRoleModal: boolean } => {
+const mapStateToProps = (state: StoreState): { toggleForgotPasswordModal: boolean, toggleLoginModal: boolean} => {
     return {
         toggleForgotPasswordModal: selectForgotPasswordModal(state),
-        toggleRegisterModal: selectRegisterModal(state),
-        toggleLoginModal: selectLoginModal(state),
-        toggleRegisterAsRoleModal: selectRegisterAsRoleModal(state)
+        toggleLoginModal: selectLoginModal(state)
     }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
     return {
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.ResetTogglesModal }),
-        toggleLogin: () => dispatch<IToggleLogin>({ type: ModalActionTypes.ToggleLoginModal }),
-        toggleRegister: () => dispatch<IToggleRegister>({ type: ModalActionTypes.ToggleRegisterModal }),
+        toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.ToggleRegisterAsRoleModal})
 
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginModal);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginModalComponent);

@@ -1,13 +1,10 @@
 import { makeStyles } from "@material-ui/core";
 
 export interface LoginModalProps {
-    toggleRegisterModal: boolean;
     toggleForgotPasswordModal: boolean;
     toggleLoginModal: boolean
     resetTogglesModalAction: () => void;
-    toggleLogin: () => void;
-    toggleRegister: (show: boolean) => void;
-    toggleRegisterAsRoleModal: boolean;
+    toggleRegisterAsRoleModalAction: () => void;
 }
 
 export const dialogStyles = makeStyles(() => ({
