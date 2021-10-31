@@ -1,3 +1,5 @@
+@import '../../assets/globalVariables.scss';
+
 .login {
 	width: auto;
 	display: flex;
@@ -8,7 +10,7 @@
 	text-align: center;
 	.title {
 		// margin: 30px 0;
-		color: #5FA6FF;
+		color: $brandColor;
 		font-family: "Roboto";
 	}
 	.error-box {
@@ -42,7 +44,7 @@
 		letter-spacing: 0.5px;
 		line-height: 35px;
 		padding: 0 20px 0 20px;
-		background-color: #5FA6FF;
+		background-color: $brandColor;
 		color: white;
 		font-family: 'Roboto';
 		border-radius: 25px;
@@ -74,7 +76,7 @@
 		margin-bottom: 20px;
 
 		.hyperlink:visited {
-			color: #5FA6FF;
+			color: $brandColor;
 			background-color: transparent;
   			text-decoration: none;
 		}
@@ -88,7 +90,7 @@
 .submit-button:hover{
 	color: black;
 	box-shadow: 0 14px 9px 0 rgba(0,0,0,0.24), 0 15px 22px rgba(0,0,0,0.19);
-	background-color: #5FA6FF
+	background-color: $brandColor;
 }
 
 .errors{
@@ -114,7 +116,7 @@
         background: white;
         cursor: pointer;
         .icon-button-login {
-            color: #5FA6FF;
+            color: $brandColor;
         }
     }
 }

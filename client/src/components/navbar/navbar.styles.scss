@@ -1,6 +1,8 @@
+@import '../../assets/globalVariables.scss';
+
 .navbar-container {
     padding-top: 6px;
-    background-color: #5fa6ff;
+    background-color: $brandColor;
     border-bottom: 1px solid rgb(232, 232, 232);
     .navbar-header-container {
         display: flex;
