@@ -1,3 +1,4 @@
 export interface NavbarProps {
-    toggleLogin: () => void;
+    toggleLoginModalAction: () => void;
+    toggleRegisterAsRoleModalAction: () => void;
 }

@@ -1,22 +1,28 @@
 import React from 'react';
 import { Button } from '@mui/material'
 import './navbar.styles.scss'
-import LoginModal from '../login/LoginModal';
+import LoginModal from '../login/login.component';
 import { NavbarProps } from './navbar.types';
 import { Dispatch } from "redux";
-import { IToggleLogin, TModalReducerActions } from '../../redux/modal-visibility/modal.actions';
+import { IToggleLogin, IToggleRegisterAsRole, TModalReducerActions } from '../../redux/modal-visibility/modal.actions';
 import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
 import { connect } from 'react-redux';
+import RegisterWrapperComponent from '../register-wrapper/register-wrapper.component';
 
 const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
-    const { toggleLogin } = props;
+    const { toggleLoginModalAction, toggleRegisterAsRoleModalAction } = props;
     const handleOpenLogin = () => {
-        toggleLogin();
+        toggleLoginModalAction();
+    }
+
+    const handleOpenRegisterWrapper = () => {
+        toggleRegisterAsRoleModalAction();
     }
 
     return (
         <div className="navbar-container">
             <LoginModal />
+            <RegisterWrapperComponent />
             <div className="navbar-header-container">
                 <div className="navbar-logo-container">
                     <div className="navbar-white-text">FIND</div>
@@ -25,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
                 </div>
                 <div className='navbar-buttons-container'>
                     <Button className='navigation-link' style={{ borderRadius: 50 }} onClick={handleOpenLogin}>Sign up</Button>
-                    <Button className='navigation-link' style={{ borderRadius: 50 }} >Sign in</Button>
+                    <Button className='navigation-link' style={{ borderRadius: 50 }} onClick={handleOpenRegisterWrapper}>Sign in</Button>
                 </div>
             </div>
         </div>
@@ -34,7 +40,8 @@ const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
     return {
-        toggleLogin: () => dispatch<IToggleLogin>({ type: ModalActionTypes.ToggleLoginModal }),
+        toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.ToggleLoginModal }),
+        toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.ToggleRegisterAsRoleModal})
     }
 }
 
