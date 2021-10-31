@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, Fade, TextField} from "@mui/material";
+import { Dialog, Fade, TextField } from "@mui/material";
 import { dialogStyles, LoginModalProps } from './login.types';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './login.styles.scss'
 
-const LoginModalComponent: React.FC<LoginModalProps> = ({...props}) => {
+const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
     const { toggleForgotPasswordModal, toggleLoginModal, resetTogglesModalAction, toggleRegisterAsRoleModalAction } = props;
 
     const styles = dialogStyles();
@@ -45,72 +45,76 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({...props}) => {
                         <FontAwesomeIcon className='icon-button-login' icon={faTimes} />
                     </button>
                     <div className='login'>
-            <h1 className='title'>Find your Man</h1>
+                        <h1 className='title'>Find your Man</h1>
 
-            {/* {state.response ? <div className='error-box'>{state.response}</div> : null} */}
-            <form className='login-form'  autoComplete='on'>
-                <TextField
-                    classes = {{root:styles.textFieldRoot}}
-                    type='email'
-                    autoComplete='off'
-                    placeholder="Email"
-                    hiddenLabel={true}
-                    name='email'
-                    variant='standard'
-                    // value={values.email} onChange={handleChange} error={errors.email === ""}
-                    // helperText={errors.email ? errors.email : null}
-                    InputLabelProps={{ shrink: false }}
-                    FormHelperTextProps={{ style:{
-                        color: 'red',
-                        fontSize: '10px',
-                        width:'200px'
-                    } }} />
-                <TextField
-                    classes = {{root:styles.textFieldRoot}}
-                    type='password'
-                    autoComplete='off'
-                    placeholder="Password"
-                    hiddenLabel={true}
-                    name='password'
-                    variant='standard'
-                    // value={values.password} onChange={handleChange} error={errors.password === ""}
-                    // helperText={errors.password ? errors.password : null}
-                    InputLabelProps={{ shrink: false }}
-                    FormHelperTextProps={{ style:{
-                        color: 'red',
-                        fontSize: '10px',
-                        width:'200px'
-                    } }} />
-                <button
-                    className= 'submit-button'
-                    type='submit'>
-                    Sign up
-                </button>
-                <button
-                    className= 'google-button'
-                    type='submit'>
-                   Sign in with google
-                </button>
-                    <div>
-                        <div className='hyperlinks'>
-                            <Link className='hyperlink' to={'/'}>Forgot password?</Link>
-                        </div>
-                        <div className='hyperlinks'>
-                            <span>No account yet? </span>
-                            <Link className='hyperlink'  to={'/'} onClick={handleOpenRegisterWrapper}>Register</Link>
-                        </div>
+                        {/* {state.response ? <div className='error-box'>{state.response}</div> : null} */}
+                        <form className='login-form' autoComplete='on'>
+                            <TextField
+                                classes={{ root: styles.textFieldRoot }}
+                                type='email'
+                                autoComplete='off'
+                                placeholder="Email"
+                                hiddenLabel={true}
+                                name='email'
+                                variant='standard'
+                                // value={values.email} onChange={handleChange} error={errors.email === ""}
+                                // helperText={errors.email ? errors.email : null}
+                                InputLabelProps={{ shrink: false }}
+                                FormHelperTextProps={{
+                                    style: {
+                                        color: 'red',
+                                        fontSize: '10px',
+                                        width: '200px'
+                                    }
+                                }} />
+                            <TextField
+                                classes={{ root: styles.textFieldRoot }}
+                                type='password'
+                                autoComplete='off'
+                                placeholder="Password"
+                                hiddenLabel={true}
+                                name='password'
+                                variant='standard'
+                                // value={values.password} onChange={handleChange} error={errors.password === ""}
+                                // helperText={errors.password ? errors.password : null}
+                                InputLabelProps={{ shrink: false }}
+                                FormHelperTextProps={{
+                                    style: {
+                                        color: 'red',
+                                        fontSize: '10px',
+                                        width: '200px'
+                                    }
+                                }} />
+                            <button
+                                className='submit-button'
+                                type='submit'>
+                                Sign up
+                            </button>
+                            <button
+                                className='google-button'
+                                type='submit'>
+                                Sign in with google
+                            </button>
+                            <div>
+                                <div className='hyperlinks'>
+                                    <Link className='hyperlink' to={'/'}>Forgot password?</Link>
+                                </div>
+                                <div className='hyperlinks'>
+                                    <span>No account yet? </span>
+                                    <Link className='hyperlink' to={'/'} onClick={handleOpenRegisterWrapper}>Register</Link>
+                                </div>
+                            </div>
+
+                            {/* {isLoading ? <LoadingSpinner /> : null} */}
+                        </form>
                     </div>
-                
-                 {/* {isLoading ? <LoadingSpinner /> : null} */}
-            </form>
-        </div>
                 </div>
             </Fade>
         </Dialog>
     );
 }
 
-const mapStateToProps = (state: StoreState): { toggleForgotPasswordModal: boolean, toggleLoginModal: boolean} => {
+const mapStateToProps = (state: StoreState): { toggleForgotPasswordModal: boolean, toggleLoginModal: boolean } => {
     return {
         toggleForgotPasswordModal: selectForgotPasswordModal(state),
         toggleLoginModal: selectLoginModal(state)
@@ -120,7 +124,7 @@ const mapStateToProps = (state: StoreState): { toggleForgotPasswordModal: boolea
 const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
     return {
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.ResetTogglesModal }),
-        toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.ToggleRegisterAsRoleModal})
+        toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.ToggleRegisterAsRoleModal })
 
     }
 }
