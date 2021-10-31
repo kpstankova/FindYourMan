@@ -1,0 +1,76 @@
+@import "../../assets/globalVariables.scss";
+
+.register-wraper-container {
+    width: 500px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .close-button {
+        border: none;
+        outline: none;
+        width: 25px;
+        margin-left: auto;
+        margin-right: 20px;
+        margin-top: 10px;
+        background: white;
+        cursor: pointer;
+        .icon-button {
+            color: $brandColor;
+            font-size: 1.3rem;
+        }
+    }
+    h1 {
+        text-align: center;
+        margin-top: 30px;
+        color: $brandColor;
+    }
+    .sign-in-buttons {
+        height: 100%;
+        margin-bottom: 40px;
+        .button-wraper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 30px;
+            .label {
+                text-align: center;
+                margin: auto 30px;
+            }
+            .button-styles {
+                font-family: "DM Sans Medium", sans-serif;
+                color: #5fa6ff;
+                padding: 5px 75px;
+                font-size: 1rem;
+                font-weight: bold;
+                line-height: 1.75;
+                background-color: white;
+                border: 0;
+                cursor: pointer;
+                outline: 0;
+                border-radius: 25px;
+                margin-right: 50px;
+                box-shadow: 0px 3px 7px 2px rgb(0 0 0 / 20%);
+                margin-left: 50px;
+            }
+            .button-styles:hover {
+                color: white;
+                background-color: $brandColor;
+            }
+        }
+    }
+
+    .hyperlinks {
+        color: black;
+        font-size: 15px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+
+        .hyperlink:visited {
+            color: $brandColor;
+            background-color: transparent;
+            text-decoration: none;
+        }
+    }
+}
