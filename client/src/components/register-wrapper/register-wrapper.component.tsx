@@ -6,25 +6,26 @@ import { RegisterWrapperProps, wrapperStyles } from "./register-wrapper.types";
 import Backdrop from '@material-ui/core/Backdrop';
 import { Link } from 'react-router-dom';
 import { StoreState } from "../../redux/root-reducer";
-import { IResetToggles, IToggleRegister, TModalReducerActions } from "../../redux/modal-visibility/modal.actions";
+import { IResetToggles, ISetRegisterRole, IToggleRegister, TModalReducerActions } from "../../redux/modal-visibility/modal.actions";
 import { ModalActionTypes } from "../../redux/modal-visibility/modal.types";
 import { selectRegisterAsRoleModal } from "../../redux/modal-visibility/modal.selectors";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import './register-wrapper.styles.scss';
+import { RoleTypes } from "../register/register-modal.types";
 
 const RegisterWrapperComponent: React.FC<RegisterWrapperProps> = ({ ...props }) => {
-    const {toggleRegisterAsRoleModal, resetTogglesModalAction, toggleRegisterModalAction} = props;
+    const {toggleRegisterAsRoleModal, resetTogglesModalAction, toggleRegisterModalAction, setRegisterRoleAction} = props;
     const classes = wrapperStyles();
 
     const handleClick = () => {
         resetTogglesModalAction();
     }
 
-    const handleOpenSignUp = () => {
-        toggleRegisterModalAction();
+    const handleOpenSignUp = (event: any) => {
         resetTogglesModalAction();
-
+        toggleRegisterModalAction();
+        setRegisterRoleAction(event?.target.value);
     }
 
     return (
@@ -41,14 +42,13 @@ const RegisterWrapperComponent: React.FC<RegisterWrapperProps> = ({ ...props }) 
                     <h1>Sign up as:</h1>
                     <div className="sign-in-buttons">
                         <div className="button-wraper">
-                            {/* <div className="label"> Sign up as: </div> */}
-                            <button className="button-styles" value="client" onClick={handleOpenSignUp}>Client</button>
+                            <button className="button-styles" value={RoleTypes.CLIENT} onClick={handleOpenSignUp}>Client</button>
                         </div>
                         <div className="button-wraper">
-                            <button className="button-styles" value="company" onClick={handleOpenSignUp}>Company</button>
+                            <button className="button-styles" value={RoleTypes.COMPANY} onClick={handleOpenSignUp}>Company</button>
                         </div>
                         <div className="button-wraper">
-                            <button className="button-styles" value="freelancer" onClick={handleOpenSignUp}>Freelancer</button>
+                            <button className="button-styles" value={RoleTypes.FREELANCER} onClick={handleOpenSignUp}>Freelancer</button>
                         </div>
                     </div>
                     <div className='hyperlinks'>
@@ -70,6 +70,7 @@ const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
     return {
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.ResetTogglesModal }),
         toggleRegisterModalAction: () => dispatch<IToggleRegister>({ type: ModalActionTypes.ToggleRegisterModal }),
+        setRegisterRoleAction: (data: string) => dispatch<ISetRegisterRole>({type: ModalActionTypes.SetRegisterRole, data: data})
     }
 }
 

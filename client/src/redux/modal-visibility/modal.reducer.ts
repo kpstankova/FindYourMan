@@ -1,43 +1,54 @@
 import { ModalActionTypes, ModalState } from './modal.types';
 import { TModalReducerActions } from './modal.actions';
+import { RoleTypes } from '../../components/register/register-modal.types';
 
 const InitialState: ModalState = {
     toggleRegisterModal: false,
     toggleLoginModal: false,
     toggleForgotPasswordModal: false,
-    toggleRegisterAsRoleModal:false
+    toggleRegisterAsRoleModal: false,
+    registerRole: RoleTypes.CLIENT
 };
 
-export const modalReducer = ( state = InitialState, action: TModalReducerActions) : ModalState => {
-    switch(action.type) {
+export const modalReducer = (state = InitialState, action: TModalReducerActions): ModalState => {
+    switch (action.type) {
         case ModalActionTypes.ToggleRegisterModal:
             return {
+                ...state,
                 toggleRegisterModal: true,
                 toggleLoginModal: false,
                 toggleForgotPasswordModal: false,
-                toggleRegisterAsRoleModal:false
+                toggleRegisterAsRoleModal: false
             };
         case ModalActionTypes.ToggleLoginModal:
             return {
+                ...state,
                 toggleRegisterModal: false,
                 toggleLoginModal: true,
                 toggleForgotPasswordModal: false,
-                toggleRegisterAsRoleModal:false
+                toggleRegisterAsRoleModal: false
             };
         case ModalActionTypes.ToggleForgotPasswordModal:
             return {
+                ...state,
                 toggleRegisterModal: false,
                 toggleLoginModal: false,
                 toggleForgotPasswordModal: true,
-                toggleRegisterAsRoleModal:false
+                toggleRegisterAsRoleModal: false
             };
         case ModalActionTypes.ToggleRegisterAsRoleModal:
-            return{
-                toggleRegisterModal:false,
-                toggleLoginModal:false,
-                toggleForgotPasswordModal:false,
-                toggleRegisterAsRoleModal:true
+            return {
+                ...state,
+                toggleRegisterModal: false,
+                toggleLoginModal: false,
+                toggleForgotPasswordModal: false,
+                toggleRegisterAsRoleModal: true
             }
+        case ModalActionTypes.SetRegisterRole:
+            return {
+                ...state,
+                registerRole: action.data
+            };
         case ModalActionTypes.ResetTogglesModal:
             return InitialState;
         default:

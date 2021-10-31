@@ -21,4 +21,5 @@ export interface RegisterWrapperProps {
     toggleRegisterAsRoleModal: boolean;
     resetTogglesModalAction: () => void;
     toggleRegisterModalAction: () => void;
+    setRegisterRoleAction: (data: string) => void;
 }

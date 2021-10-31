@@ -24,4 +24,9 @@ export interface IToggleRegisterAsRole extends IModalBaseAction{
     type:ModalActionTypes.ToggleRegisterAsRoleModal
 }
 
-export type TModalReducerActions =IToggleRegisterAsRole | IToggleRegister | IToggleLogin | IToggleForgotPassword | IResetToggles;
+export interface ISetRegisterRole extends IModalBaseAction {
+    type: ModalActionTypes.SetRegisterRole,
+    data: string;
+}
+
+export type TModalReducerActions =IToggleRegisterAsRole | IToggleRegister | IToggleLogin | IToggleForgotPassword | IResetToggles | ISetRegisterRole;
