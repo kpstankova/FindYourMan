@@ -1,0 +1,120 @@
+.login {
+	width: auto;
+	display: flex;
+	height: auto;
+	flex-direction: column;
+	border-radius: 20px;
+	background-color: white;
+	text-align: center;
+	.title {
+		// margin: 30px 0;
+		color: #5FA6FF;
+		font-family: "Roboto";
+	}
+	.error-box {
+		font-size: 14px;
+		text-align: center;
+		color: red;
+	}
+	.message-box {
+		font-size: 20px;
+		text-align: center;
+	}
+	.icon-button {
+		display: inline-block;
+		width: 30px;
+		height: 30px;
+	}
+	.title-social {
+		margin-top: 20px;
+		margin-bottom: 10px;
+		font-size: 15px;
+		font-weight: normal;
+	}
+	a {
+		&:not(:last-of-type) {
+			margin-right: 20px;
+		}
+	}
+	.submit-button {
+		width: 200px;
+		height: 35px;
+		letter-spacing: 0.5px;
+		line-height: 35px;
+		padding: 0 20px 0 20px;
+		background-color: #5FA6FF;
+		color: white;
+		font-family: 'Roboto';
+		border-radius: 25px;
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		margin: 10px auto;
+		border:none;
+	}
+    .google-button {
+        width: 200px;
+		height: 35px;
+		letter-spacing: 0.5px;
+		line-height: 35px;
+		padding: 0 20px 0 20px;
+		background-color: #4285F4;
+		color: white;
+		font-family: 'Roboto';
+		border-radius: 25px;
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		margin: 10px auto;
+		border:none;
+    }
+	.hyperlinks {
+		color: black;
+		font-size: 15px;
+		margin-bottom: 20px;
+
+		.hyperlink:visited {
+			color: #5FA6FF;
+			background-color: transparent;
+  			text-decoration: none;
+		}
+	}
+	.error-message {
+		display: inline-block;
+		font-size: 10px;
+		color: red;
+	}
+}
+.submit-button:hover{
+	color: black;
+	box-shadow: 0 14px 9px 0 rgba(0,0,0,0.24), 0 15px 22px rgba(0,0,0,0.19);
+	background-color: #5FA6FF
+}
+
+.errors{
+	color: red;
+	font-size: 10px;
+	width: 200px
+}
+
+.login-modal{
+    max-width: 450px;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+    .close-button-login {
+        border: none;
+        outline: none;
+        font-size: 1.3rem;
+        width: 30px;
+        margin-left: auto;
+        margin-right: 20px;
+        margin-top: 30px;
+        background: white;
+        cursor: pointer;
+        .icon-button-login {
+            color: #5FA6FF;
+        }
+    }
+}
