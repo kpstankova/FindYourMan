@@ -8,6 +8,7 @@ import { IToggleLogin, IToggleRegisterAsRole, TModalReducerActions } from '../..
 import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
 import { connect } from 'react-redux';
 import RegisterWrapperComponent from '../register-wrapper/register-wrapper.component';
+import RegisterModalComponent from '../register/register-modal.component';
 
 const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
     const { toggleLoginModalAction, toggleRegisterAsRoleModalAction } = props;
@@ -23,6 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
         <div className="navbar-container">
             <LoginModal />
             <RegisterWrapperComponent />
+            <RegisterModalComponent />
             <div className="navbar-header-container">
                 <div className="navbar-logo-container">
                     <div className="navbar-white-text">FIND</div>
@@ -41,7 +43,7 @@ const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
 const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
     return {
         toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.ToggleLoginModal }),
-        toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.ToggleRegisterAsRoleModal})
+        toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.ToggleRegisterAsRoleModal })
     }
 }
 
