@@ -88,7 +88,7 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
                             <button
                                 className='submit-button'
                                 type='submit'>
-                                Sign up
+                                Sign in
                             </button>
                             <button
                                 className='google-button'

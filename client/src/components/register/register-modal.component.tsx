@@ -123,7 +123,7 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
                             <button
                                 className='submit-button'
                                 type='submit'>
-                                Sign in
+                                Sign up
                             </button>
                             <div>
                                 <div className='hyperlinks'>

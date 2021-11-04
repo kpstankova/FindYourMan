@@ -32,8 +32,8 @@ const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
                     <div className='navbar-white-text'>MAN</div>
                 </div>
                 <div className='navbar-buttons-container'>
-                    <Button className='navigation-link' style={{ borderRadius: 50 }} onClick={handleOpenLogin}>Sign up</Button>
-                    <Button className='navigation-link' style={{ borderRadius: 50 }} onClick={handleOpenRegisterWrapper}>Sign in</Button>
+                    <Button className='navigation-link' style={{ borderRadius: 50 }} onClick={handleOpenLogin}>Sign in</Button>
+                    <Button className='navigation-link' style={{ borderRadius: 50 }} onClick={handleOpenRegisterWrapper}>Sign up</Button>
                 </div>
             </div>
         </div>
