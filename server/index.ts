@@ -3,9 +3,11 @@ import Knex from "knex";
 import { Model } from "objection";
 import config from "./knexfile";
 import User from "./models/User";
+import authRouter from './routers/authRouter';
 
 const app: Application = express();
 const port = 3001;
+app.use(express.json());
 
 const knex = Knex(config);
 Model.knex(knex);
@@ -32,6 +34,8 @@ app.post("/user", async (req, res) => {
     console.log(err);
   }
 });
+
+app.use('/auth', authRouter);
 
 app.listen(port, () => {
   return console.log(`server is listening on ${port}`);
