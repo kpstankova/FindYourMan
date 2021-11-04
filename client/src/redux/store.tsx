@@ -12,6 +12,7 @@ export const history = createBrowserHistory()
 export const rootConfig = {
     key: 'root',
     storage: storage,
+    blacklist: ['modal']
 };
 
 export const store = createStore(
