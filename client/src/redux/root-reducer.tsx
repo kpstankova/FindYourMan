@@ -5,10 +5,13 @@ import { ModalState } from './modal-visibility/modal.types';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
 import { PersistPartial } from 'redux-persist/lib/persistReducer';
+import { onboardingReducer } from './onboarding/onboarding.reducer';
+import { OnboardingState } from './onboarding/onboarding.types';
 
 export interface StoreState {
     router: RouterState & PersistPartial;
     modal: ModalState;
+    onboarding: OnboardingState;
 };
 
 const routerConfig = {
@@ -20,6 +23,7 @@ const routerConfig = {
 export const rootReducer = (history: any) => combineReducers<StoreState>({
     router: persistReducer(routerConfig, connectRouter(history)),
     modal: modalReducer,
+    onboarding: onboardingReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
