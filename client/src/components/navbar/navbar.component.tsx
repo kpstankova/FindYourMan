@@ -9,7 +9,7 @@ import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
 import { connect } from 'react-redux';
 import RegisterWrapperComponent from '../register-wrapper/register-wrapper.component';
 import RegisterModalComponent from '../register/register-modal.component';
-
+import ForgotPasswordModalComponent from '../forgot-password/forgot-password.component'
 const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
     const { toggleLoginModalAction, toggleRegisterAsRoleModalAction } = props;
     const handleOpenLogin = () => {
@@ -25,6 +25,7 @@ const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
             <LoginModal />
             <RegisterWrapperComponent />
             <RegisterModalComponent />
+            <ForgotPasswordModalComponent />
             <div className="navbar-header-container">
                 <div className="navbar-logo-container">
                     <div className="navbar-white-text">FIND</div>

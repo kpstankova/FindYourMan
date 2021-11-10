@@ -4,6 +4,7 @@ export interface LoginModalProps {
     toggleForgotPasswordModal: boolean;
     toggleLoginModal: boolean
     resetTogglesModalAction: () => void;
+    toggleForgotPasswordModalAction: () => void;
     toggleRegisterAsRoleModalAction: () => void;
 }
 
