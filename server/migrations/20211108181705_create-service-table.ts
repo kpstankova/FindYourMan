@@ -12,9 +12,9 @@ export async function up(knex: Knex): Promise<void> {
         table.string("duration").notNullable();
         table.string("city").notNullable(); // better will be 'region'
         table.string("picture");
-        table.integer("contributor_id").notNullable();
+        table.integer("contributor_id").index().references('id').inTable('User').notNullable();
         table.float("rating").notNullable().defaultTo(0);
-        table.date("publish_date").notNullable();
+        table.string("publish_date").notNullable();
       });
 }
 

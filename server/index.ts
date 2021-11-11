@@ -4,6 +4,7 @@ import { Model } from "objection";
 import config from "./knexfile";
 import User from "./models/User";
 import authRouter from './routers/authRouter';
+import serviceRouter from "./routers/serviceRouter";
 
 const app: Application = express();
 const port = 3001;
@@ -37,6 +38,7 @@ app.post("/user", async (req, res) => {
 });
 
 app.use('/auth', authRouter);
+app.use('/service', serviceRouter);
 
 app.listen(port, () => {
   return console.log(`server is listening on ${port}`);
