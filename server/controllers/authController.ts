@@ -49,7 +49,6 @@ const deleteUser = async (req: express.Request, res: express.Response) => {
     }
 }
 
-
 const register = async (req: express.Request, res: express.Response) => {
     try {
         const user: User = req.body;
@@ -66,43 +65,59 @@ const register = async (req: express.Request, res: express.Response) => {
     }
 }
 
-const registerWithGoogle = async (req: express.Request, res: express.Response) => {
+const loginWithGoogle = async (req: express.Request, res: express.Response) => {
     try {
         const googleUser: User = req.body;
         googleUser.password = googleUser.email;
-        req.body = googleUser;
+        const user:User = await (await User.query().select('password').where('email',googleUser.email))[0];
+        
+        if(!user){
+            req.body = googleUser;
+            return register(req,res);         
+        }   
 
-        return register(req, res);
-
+        if(!comparePass(googleUser.password,user.password)){
+            return res.status(401).json("Invalid password");
+        }
+     
+        return res.status(200).json("Successful login");
+        
+      
     } catch (err) {
         console.log(err);
         return res.status(422).json(err);
     }
 }
 
-//========= FRONT-END: GOOGLE SING IN/OUT ============
-// google sign out
-export function onSignIn(googleUser: any) {
-    let profile = googleUser.getBasicProfile();
-    const googleUserToSend = {
-        "email": profile.getEmail(), //can be null
-        "role": "",//TO SET
-        "name": profile.getName(),
-        "profile_pic": profile.getImageUrl() ? profile.getImageUrl() : null,
+function googleSignOut(req:express.Request,res:express.Response) {
+    try{
+        gapi.auth2.getAuthInstance().signOut();
+        return res.status(200).json("User signed out.")
     }
-
-    return googleUserToSend;
+    catch(err){
+        console.log('err');
+    }
 }
-
-export function signOut() {
-    gapi.auth2.getAuthInstance().signOut().then(() => {
-        console.log('User signed out.');
-    });
-}
-//=========================
 
 const hashPassword = (pass: string) => {
     return bcrypt.hashSync(pass, SALT_ROUNDS)
 }
 
-export { changePassword, editInfo, deleteUser, register, registerWithGoogle };
+const comparePass = (plainPass:string, hashedPass:string)=>{
+   return bcrypt.compareSync(plainPass, hashedPass);
+}
+
+//========= FRONT-END: GOOGLE SING IN/OUT ============
+// function onSignIn(googleUser: any) {
+//     let profile = googleUser.getBasicProfile();
+//     const googleUserToSend = {
+//         "email": profile.getEmail(), //can be null
+//         "role": "",//TO SET
+//         "name": profile.getName(),
+//         "profile_pic": profile.getImageUrl() ? profile.getImageUrl() : null,
+//     }
+
+//     return googleUserToSend;
+// }
+
+export { changePassword, editInfo, deleteUser, register, loginWithGoogle,googleSignOut};
