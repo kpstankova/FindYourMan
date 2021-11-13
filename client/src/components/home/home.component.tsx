@@ -14,7 +14,7 @@ const HomeComponent = () => {
                     <div className="home-contex-message">{contexMessage}</div>
                     <div className="home-button-container">
                         <Button size='large' variant='contained' className='learn-more-button' style={{ borderRadius: 50 }} >Learn more</Button>
-                        <Button style={{ borderRadius: 50 }} className='contact-us-button'>Contact us</Button>
+                        <Button style={{ borderRadius: 50 }} className='contact-us-button' >Contact us</Button>
                     </div>
                 </div>
             </div>

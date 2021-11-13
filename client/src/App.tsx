@@ -7,6 +7,7 @@ import { store } from './redux/store';
 import { ConnectedRouter } from 'connected-react-router';
 import Navbar from './components/navbar/navbar.component';
 import HomeComponent from './components/home/home.component';
+import OnboardingPageComponent from './components/onboarding/onboarding.component';
 
 
 interface AppProps {
@@ -22,7 +23,8 @@ const App = (props: AppProps) => {
         <ConnectedRouter history={history}>
           <Navbar/>
           <Switch>
-            <Route path="/" component={HomeComponent} />
+            <Route exact={true} path="/" component={HomeComponent} />
+            <Route exact={true} path="/onboarding" component={OnboardingPageComponent} />
           </Switch>
         </ConnectedRouter>
       </div>
