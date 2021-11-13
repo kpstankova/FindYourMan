@@ -1,6 +1,7 @@
 import { Model } from "objection";
 
 export default class User extends Model {
+  user_id: number;
   email: string;
   password: string;
   role: string;
