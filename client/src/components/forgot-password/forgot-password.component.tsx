@@ -1,6 +1,5 @@
 import React from 'react';
 import { Dialog, Fade, TextField } from "@mui/material";
-import { dialogStyles, LoginModalProps } from './login.types';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { StoreState } from '../../redux/root-reducer';
@@ -11,11 +10,12 @@ import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
 import Backdrop from '@material-ui/core/Backdrop';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import './login.styles.scss'
+import '../login/login.styles.scss'
+import { ForgotPasswordModalProps } from './forgot-password.types';
+import { dialogStyles } from '../login/login.types';
 
-const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
-    const { toggleForgotPasswordModal, toggleLoginModal, resetTogglesModalAction, 
-            toggleRegisterAsRoleModalAction, toggleForgotPasswordModalAction } = props;
+const ForgotPasswordModalComponent: React.FC<ForgotPasswordModalProps> = ({ ...props }) => {
+    const { toggleForgotPasswordModal, resetTogglesModalAction, toggleRegisterAsRoleModalAction, toggleLoginModalAction } = props;
 
     const styles = dialogStyles();
 
@@ -27,8 +27,8 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
         toggleRegisterAsRoleModalAction();
     }
 
-    const handleOpenForgotPasswordModal = () => {
-        toggleForgotPasswordModalAction();
+    const handleOpenLogin = () => {
+        toggleLoginModalAction();
     }
 
     return (
@@ -36,7 +36,7 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
             classes={{ root: styles.dialogRoot, paper: styles.dialogPaper }}
             closeAfterTransition={true}
             onClose={handleClose}
-            open={toggleLoginModal}
+            open={toggleForgotPasswordModal}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
             BackdropComponent={Backdrop}
@@ -44,7 +44,7 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
                 timeout: 800
             }}>
 
-            <Fade in={toggleLoginModal}>
+            <Fade in={toggleForgotPasswordModal}>
                 <div className='login-modal'>
                     <button className='close-button-login' aria-label='google' onClick={handleClose}>
                         <FontAwesomeIcon className='icon-button-login' icon={faTimes} />
@@ -72,41 +72,19 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
                                         width: '200px'
                                     }
                                 }} />
-                            <TextField
-                                classes={{ root: styles.textFieldRoot }}
-                                type='password'
-                                autoComplete='off'
-                                placeholder="Password"
-                                hiddenLabel={true}
-                                name='password'
-                                variant='standard'
-                                // value={values.password} onChange={handleChange} error={errors.password === ""}
-                                // helperText={errors.password ? errors.password : null}
-                                InputLabelProps={{ shrink: false }}
-                                FormHelperTextProps={{
-                                    style: {
-                                        color: 'red',
-                                        fontSize: '10px',
-                                        width: '200px'
-                                    }
-                                }} />
+                            <div className="info-message">The system will send you a recovery email</div>
                             <button
                                 className='submit-button'
                                 type='submit'>
-                                Sign in
-                            </button>
-                            <button
-                                className='google-button'
-                                type='submit'>
-                                Sign in with google
+                                Send
                             </button>
                             <div>
                                 <div className='hyperlinks'>
-                                    <Link className='hyperlink' to={'/'} onClick={handleOpenForgotPasswordModal}>Forgot password?</Link>
+                                   Return to <Link className='hyperlink' to={'/'} onClick={handleOpenLogin}>sign in</Link>
                                 </div>
                                 <div className='hyperlinks'>
                                     <span>No account yet? </span>
-                                    <Link className='hyperlink' to={'/'} onClick={handleOpenRegisterWrapper}>Register</Link>
+                                    <Link className='hyperlink' to={'/'} onClick={handleOpenRegisterWrapper}>Create an account!</Link>
                                 </div>
                             </div>
 
@@ -119,10 +97,9 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
     );
 }
 
-const mapStateToProps = (state: StoreState): { toggleForgotPasswordModal: boolean, toggleLoginModal: boolean } => {
+const mapStateToProps = (state: StoreState): { toggleForgotPasswordModal: boolean } => {
     return {
         toggleForgotPasswordModal: selectForgotPasswordModal(state),
-        toggleLoginModal: selectLoginModal(state)
     }
 }
 
@@ -130,8 +107,8 @@ const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
     return {
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.ResetTogglesModal }),
         toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.ToggleRegisterAsRoleModal }),
-        toggleForgotPasswordModalAction: () => dispatch<IToggleForgotPassword>({ type: ModalActionTypes.ToggleForgotPasswordModal })
+        toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.ToggleLoginModal})
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginModalComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordModalComponent);
