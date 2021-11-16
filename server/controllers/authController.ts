@@ -54,9 +54,13 @@ const register = async (req: express.Request, res: express.Response) => {
         const user: User = req.body;
         user.password = hashPassword(user.password);
 
-        await User.query()
+        const result = await User.query()
             .insert(user);
-
+        
+        if (!result) {
+            return res.status(400).send("Registration failed.");
+        }
+        
         return res.status(201).json("Successful registration");
 
     } catch (err) {
