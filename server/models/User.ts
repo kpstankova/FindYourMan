@@ -12,7 +12,7 @@ export default class User extends Model {
   profile_pic?: string;
   verified?: number;
   rating?: number;
-  lastLoggedIn?: Date;
+  lastLoggedIn?: string;
 
   static tableName = "user";
 
@@ -39,7 +39,7 @@ export default class User extends Model {
       profile_pic: { type: "string" },
       verified: { type: "integer" },
       rating: { type: "float" },
-      last_logged_in: { type: "date" },
+      last_logged_in: { type: "string" },
     },
   };
 }

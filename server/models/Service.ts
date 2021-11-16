@@ -10,7 +10,7 @@ export default class Service extends Model {
     city: string;
     contributor_id: number;
     price: number;
-    publish_date: Date; 
+    publish_date: string; 
     discount?: number; 
     picture?: string;
     rating?: number;
@@ -34,7 +34,7 @@ export default class Service extends Model {
             city: {type: "string"},
             contributor_id: {type: "integer"},
             price: {type: ["float", "0"]},           
-            publish_date: {type: "date"},          
+            publish_date: {type: "string"},          
             discount: {type: ["float", "0"]},          
             picture: {type: ["string", "null"]},          
             rating: {type: ["float", "0"]},
