@@ -1,6 +1,7 @@
 import { Model } from "objection";
 
 export default class User extends Model {
+  user_id: number;
   email: string;
   password: string;
   role: string;
@@ -11,7 +12,7 @@ export default class User extends Model {
   profile_pic?: string;
   verified?: number;
   rating?: number;
-  lastLoggedIn?: Date;
+  lastLoggedIn?: string;
 
   static tableName = "user";
 
@@ -21,17 +22,24 @@ export default class User extends Model {
 
     properties: {
       user_id: { type: "integer" },
-      email: { type: "string" },
+      email: { type: "string", 
+                unique: true, minLength: 1, 
+                maxLength: 128 },
       password: { type: "string" },
-      role: { type: "string" },
-      name: { type: "string" },
-      phone: { type: "string" },
-      vat: { type: "string" },
+      role: { type: "string", 
+              enum: ["freelancer", "client", "company"], 
+              default: "client" },
+      name: { type: "string", 
+              minLength: 1 },
+      phone: { type: "string",
+                unique: true },
+      vat: { type: "string",
+              unique: true },
       address: { type: "string" },
       profile_pic: { type: "string" },
       verified: { type: "integer" },
       rating: { type: "float" },
-      last_logged_in: { type: "date" },
+      last_logged_in: { type: "string" },
     },
   };
 }

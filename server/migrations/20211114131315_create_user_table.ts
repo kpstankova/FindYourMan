@@ -13,7 +13,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string("profile_pic");
     table.integer("verified").notNullable().defaultTo(0);
     table.float("rating").notNullable().defaultTo(0);
-    table.date("last_logged_in");
+    table.string("last_logged_in");
   });
 }
 
