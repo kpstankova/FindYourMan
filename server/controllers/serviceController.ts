@@ -31,23 +31,34 @@ const updateService = async (req: Request, res: Response) => {
 
 const getService = async (req: Request, res: Response) => {
     try {
-        const services = await Service.query().select('*').where('service_id', req.params.id);
+        const service = await Service.query().select('*').where('service_id', req.params.id).first();
 
-        if (!services[0]) {
+        if (!service) {
             return res.status(404).json("Service not found.");
         }
 
-        return res.status(200).json(services[0]);
+        return res.status(200).json(service);
 
     } catch (err) {
         return res.status(400).json(err);
     }
 }
 
+const getAllServices = async (req: Request, res: Response) => {
+    try {
+        const result: Service[] = await Service.query().select("*");
+        return res.status(200).json(result);
+    }
+    catch (err) {
+        return res.status(400).json(err);
+    }
+}
+
+
 const addService = async (req: Request, res: Response) => {
     try {
         req.body.publish_date = mapDateToSqlDate(req.body.publish_date);
-  
+
         const service: {
             price: number,
             name: string,
@@ -75,4 +86,4 @@ const mapDateToSqlDate = (date: Date) => {
     return new Date().toISOString().slice(0, 19).replace('T', ' ');
 }
 
-export { addService, deleteService, updateService, getService };
+export { addService, deleteService, updateService, getService, getAllServices };
