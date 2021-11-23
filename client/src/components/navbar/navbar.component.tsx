@@ -43,8 +43,8 @@ const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
     return {
-        toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.ToggleLoginModal }),
-        toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.ToggleRegisterAsRoleModal })
+        toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.TOGGLE_LOGIN_MODAL }),
+        toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.TOGGLE_REGISTER_AS_ROLE_MODAL })
     }
 }
 
