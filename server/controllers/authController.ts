@@ -128,7 +128,7 @@ const login = async (req: express.Request, res: express.Response) => {
         const accessToken = generateAccessToken({
             email: user.email
         })
-        return res.status(200).json({accessToken: accessToken});
+        return res.status(200).json({accessToken: accessToken, email: user.email, role: user.role, id: user.user_id});
 
     } catch (err) {
         console.log(err);

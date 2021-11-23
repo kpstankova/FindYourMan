@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dialog, Fade, TextField } from "@mui/material";
-import { dialogStyles, LoginModalProps } from './login.types';
+import { dialogStyles, LoginModalProps, validationSchema } from './login.types';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { StoreState } from '../../redux/root-reducer';
@@ -12,10 +12,16 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './login.styles.scss'
+import { useFormik } from 'formik';
+import { LoginState, User, UserActionTypes } from '../../redux/user/user.types';
+import { headers } from '../register/register-modal.types';
+import axios from 'axios';
+import { ILoginFailure, ILoginSuccess, TUserReducerActions } from '../../redux/user/user.actions';
 
 const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
-    const { toggleForgotPasswordModal, toggleLoginModal, resetTogglesModalAction, 
-            toggleRegisterAsRoleModalAction, toggleForgotPasswordModalAction } = props;
+    const { toggleForgotPasswordModal, toggleLoginModal, resetTogglesModalAction,
+        toggleRegisterAsRoleModalAction, toggleForgotPasswordModalAction, loginSuccessAction, loginFailureAction } = props;
+    const [response, setResponseState] = useState<string>("");
 
     const styles = dialogStyles();
 
@@ -29,7 +35,39 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
 
     const handleOpenForgotPasswordModal = () => {
         toggleForgotPasswordModalAction();
+    };
+
+    const handleLogin = (newUser: LoginState) => {
+        return axios
+            .post(`http://localhost:3001/auth/login`, {
+                email: newUser.email,
+                password: newUser.password,
+            }, { headers: headers })
+            .then((response: any) => {
+                loginSuccessAction({id: response.data.id, email: response.data.email, role: response.data.role});
+                localStorage.setItem('accessToken', response.data.accessToken);
+                return response.data;
+            })
+            .catch((error: any) => {
+                setResponseState(error);
+                loginFailureAction(error);
+            });
     }
+
+    const { handleSubmit, handleChange, values, errors } = useFormik({
+        initialValues: {
+            email: '',
+            password: ''
+        },
+        validateOnBlur: true,
+        validationSchema,
+        onSubmit: (values) => {
+            const { email, password } = values;
+            handleLogin(values);
+            handleClose();
+            resetTogglesModalAction();
+        }
+    })
 
     return (
         <Dialog
@@ -52,8 +90,8 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
                     <div className='login'>
                         <h1 className='title'>Find your Man</h1>
 
-                        {/* {state.response ? <div className='error-box'>{state.response}</div> : null} */}
-                        <form className='login-form' autoComplete='on'>
+                        {response ? <div className='error-box'>{response}</div> : null}
+                        <form className='login-form' autoComplete='on' onSubmit={handleSubmit}>
                             <TextField
                                 classes={{ root: styles.textFieldRoot }}
                                 type='email'
@@ -62,8 +100,8 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
                                 hiddenLabel={true}
                                 name='email'
                                 variant='standard'
-                                // value={values.email} onChange={handleChange} error={errors.email === ""}
-                                // helperText={errors.email ? errors.email : null}
+                                value={values.email} onChange={handleChange} error={errors.email === ""}
+                                helperText={errors.email ? errors.email : null}
                                 InputLabelProps={{ shrink: false }}
                                 FormHelperTextProps={{
                                     style: {
@@ -80,8 +118,8 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
                                 hiddenLabel={true}
                                 name='password'
                                 variant='standard'
-                                // value={values.password} onChange={handleChange} error={errors.password === ""}
-                                // helperText={errors.password ? errors.password : null}
+                                value={values.password} onChange={handleChange} error={errors.password === ""}
+                                helperText={errors.password ? errors.password : null}
                                 InputLabelProps={{ shrink: false }}
                                 FormHelperTextProps={{
                                     style: {
@@ -126,11 +164,13 @@ const mapStateToProps = (state: StoreState): { toggleForgotPasswordModal: boolea
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
+const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReducerActions>) => {
     return {
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.RESET_TOGGLES_MODAL }),
         toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.TOGGLE_REGISTER_AS_ROLE_MODAL }),
-        toggleForgotPasswordModalAction: () => dispatch<IToggleForgotPassword>({ type: ModalActionTypes.TOGGLE_FORGOT_PASSWORD_MODAL })
+        toggleForgotPasswordModalAction: () => dispatch<IToggleForgotPassword>({ type: ModalActionTypes.TOGGLE_FORGOT_PASSWORD_MODAL }),
+        loginSuccessAction: (data: User) => dispatch<ILoginSuccess>({type: UserActionTypes.LOGIN_SUCCESS, data: data}),
+        loginFailureAction: (data: string) => dispatch<ILoginFailure>({ type: UserActionTypes.LOGIN_FAILED, data: data})
     }
 }
 

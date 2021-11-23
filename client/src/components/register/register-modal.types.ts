@@ -1,14 +1,17 @@
 import { makeStyles } from "@material-ui/core";
 import * as Yup from 'yup'
-import { RegisterState } from "../../redux/user/user.types";
+import { RegisterState, User } from "../../redux/user/user.types";
 
 export interface RegisterModalProps {
     toggleRegisterModal: boolean;
     registerRole: string;
+    loginSuccessAction: (data: User) => void;
+    loginFailureAction: (data: string) => void;
     registerUserSuccessAction: () => void;
     registerUserErrorAction: (data: string) => void;
     resetTogglesModalAction: () => void;
     toggleLoginModalAction: () => void;
+    redirectToOnboarding: () => void;
 }
 
 export const dialogStyles = makeStyles(() => ({

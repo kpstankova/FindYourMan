@@ -12,13 +12,16 @@ import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
 import { useFormik } from 'formik';
-import { RegisterState, UserActionTypes } from '../../redux/user/user.types';
+import { LoginState, RegisterState, User, UserActionTypes } from '../../redux/user/user.types';
 import axios from "axios";
-import { IRegisterFailure, IRegisterSuccess, TUserReducerActions } from '../../redux/user/user.actions';
+import { ILoginFailure, ILoginSuccess, IRegisterFailure, IRegisterSuccess, TUserReducerActions } from '../../redux/user/user.actions';
 import { selectRegisterRole } from '../../redux/user/user.selectors';
+import { push, CallHistoryMethodAction } from "connected-react-router";
+
 
 const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
-    const { resetTogglesModalAction, toggleLoginModalAction, registerUserSuccessAction, registerUserErrorAction, toggleRegisterModal, registerRole } = props;
+    const { resetTogglesModalAction, toggleLoginModalAction, registerUserSuccessAction, registerUserErrorAction, toggleRegisterModal, registerRole, 
+        loginSuccessAction, loginFailureAction, redirectToOnboarding} = props;
     const [response, setResponseState] = useState<string>("");
 
     const styles = dialogStyles();
@@ -31,6 +34,22 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
         toggleLoginModalAction();
     };
 
+    const handleLogin = (newUser: LoginState) => {
+        return axios
+            .post(`http://localhost:3001/auth/login`, {
+                email: newUser.email,
+                password: newUser.password,
+            }, { headers: headers })
+            .then((response: any) => {
+                loginSuccessAction({id: response.data.id, email: response.data.email, role: response.data.role});
+                localStorage.setItem('accessToken', response.data.accessToken);
+            })
+            .catch((error: any) => {
+                setResponseState(error);
+                loginFailureAction(error);
+            });
+    }
+
     const handleRegister = (newUser: RegisterState) => {
         return axios
             .post(`http://localhost:3001/auth/register`, {
@@ -40,7 +59,8 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
             }, { headers: headers })
             .then((response: any) => {
                 registerUserSuccessAction();
-                return response.data;
+                handleLogin({email: newUser.email, password: newUser.password});
+                redirectToOnboarding();
             })
             .catch((error: any) => {
                 setResponseState(error)
@@ -168,12 +188,15 @@ const mapStateToProps = (state: StoreState): { toggleRegisterModal: boolean, reg
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReducerActions>) => {
+const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReducerActions | CallHistoryMethodAction>) => {
     return {
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.RESET_TOGGLES_MODAL }),
         toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.TOGGLE_LOGIN_MODAL }),
         registerUserSuccessAction: () => dispatch<IRegisterSuccess>({ type: UserActionTypes.REGISTER_SUCCESS }),
-        registerUserErrorAction: (data:  string) => dispatch<IRegisterFailure>({ type: UserActionTypes.REGISTER_FAILED, data: data})
+        registerUserErrorAction: (data:  string) => dispatch<IRegisterFailure>({ type: UserActionTypes.REGISTER_FAILED, data: data}),
+        loginSuccessAction: (data: User) => dispatch<ILoginSuccess>({type: UserActionTypes.LOGIN_SUCCESS, data: data}),
+        loginFailureAction: (data: string) => dispatch<ILoginFailure>({ type: UserActionTypes.LOGIN_FAILED, data: data}),
+        redirectToOnboarding: () => dispatch(push('/onboarding')),
     }
 }
 
