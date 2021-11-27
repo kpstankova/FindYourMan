@@ -56,11 +56,11 @@ const register = async (req: express.Request, res: express.Response) => {
 
         const result = await User.query()
             .insert(user);
-        
+
         if (!result) {
             return res.status(400).send("Registration failed.");
         }
-        
+
         return res.status(201).json("Successful registration");
 
     } catch (err) {
@@ -73,7 +73,7 @@ const loginWithGoogle = async (req: express.Request, res: express.Response) => {
     try {
         const googleUser: User = req.body;
         googleUser.password = googleUser.email;
-        const user: User = await (await User.query().select('password').where('email', googleUser.email))[0];
+        const user: User = await User.query().select('password').where('email', googleUser.email).first();
 
         if (!user) {
             req.body = googleUser;
@@ -124,4 +124,4 @@ const comparePass = (plainPass: string, hashedPass: string) => {
 //     return googleUserToSend;
 // }
 
-export { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut };
+export { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, SALT_ROUNDS, bcrypt };
