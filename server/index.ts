@@ -8,7 +8,7 @@ import notificationRouter from "./routers/notificationRouter";
 import serviceRouter from "./routers/serviceRouter";
 
 const app: Application = express();
-const port = 3001;
+export const port = 3001;
 
 const knex = Knex(config);
 Model.knex(knex);

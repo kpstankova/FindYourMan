@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { bcrypt, SALT_ROUNDS } from './authController';
+import { port } from '../index';
 import nodemailer from 'nodemailer';
 import User from '../models/User';
 
@@ -38,9 +39,15 @@ const sendVerificationEmail = async (req: Request, res: Response) => {
     const code = 'FYM';
 
     const details: MailDetails = addDetails(req.body.to, "FYM Account Verification",
-        `<h1 style="text-align:center">Please click the verification code below: </h1><p>${code}</p>`)
-
+        `<h1 style="text-align:center">Please click <a href="http://localhost:${port}/email/virifyAccount/${req.body.to}"> here </a> to verify your account!</h1>`)
     sendMail(details, res);
+}
+
+const verifyAccount = async (req: Request, res: Response) => {
+    if (await User.query().patch({ verified: 1 }).where({ email: req.params.email })) {
+        return res.status(200).send('Your account is verified!');
+    }
+    else res.status(400).send('User not found!');
 }
 
 const addDetails = (to: string, subject: string, html: string) => {
@@ -65,4 +72,4 @@ const sendMail = async (details: MailDetails, res: Response) => {
     });
 }
 
-export { sendForgotPasswordEmail, sendVerificationEmail };
+export { sendForgotPasswordEmail, sendVerificationEmail, verifyAccount };
