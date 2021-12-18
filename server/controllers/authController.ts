@@ -1,14 +1,17 @@
 import express from 'express';
 import User from '../models/User';
 import bcrypt from 'bcrypt';
+import { generateAccessToken } from '../utils/generateAccessToken';
+import BlackList from '../models/BlackList';
+import { AuthenticatedUserRequest } from '../interfaces/authenticatedRequest';
 
 const SALT_ROUNDS = 10;
 
-const changePassword = async (req: express.Request, res: express.Response) => {
+const changePassword = async (req: AuthenticatedUserRequest, res: express.Response) => {
     try {
         const salt = await bcrypt.genSalt(SALT_ROUNDS);
         const hash = await bcrypt.hash(req.body.password, salt);
-        const result = await User.query().patch({ password: hash }).where({ email: req.body.email });
+        const result = await User.query().patch({ password: hash }).where({ email: req.user.email });
 
         if (!result) {
             return res.status(400).send("User not found");
@@ -20,10 +23,11 @@ const changePassword = async (req: express.Request, res: express.Response) => {
     }
 }
 
-const editInfo = async (req: express.Request, res: express.Response) => {
+const editInfo = async (req: AuthenticatedUserRequest, res: express.Response) => {
+    console.log(req.body);
     try {
         const user: { name: string, phone: string, vat: string, address: string, profilePic: string } = req.body;
-        const result = await User.query().patch(user).where({ email: req.body.email });
+        const result = await User.query().patch(user).where({ email: req.user.email });
 
         if (!result) {
             return res.status(400).send("User not found");
@@ -35,9 +39,9 @@ const editInfo = async (req: express.Request, res: express.Response) => {
     }
 }
 
-const deleteUser = async (req: express.Request, res: express.Response) => {
+const deleteUser = async (req: AuthenticatedUserRequest, res: express.Response) => {
     try {
-        const result = await User.query().delete().where({ email: req.body.email });
+        const result = await User.query().delete().where({ email: req.user.email });
 
         if (!result) {
             return res.status(400).send("User not found");
@@ -111,6 +115,40 @@ const comparePass = (plainPass: string, hashedPass: string) => {
     return bcrypt.compareSync(plainPass, hashedPass);
 }
 
+const login = async (req: express.Request, res: express.Response) => {
+    try {
+        const user = await User.query().select('*').where({email: req.body.email}).first()
+        if (!user) {
+            return res.status(400).json({message: "User does not exists"});
+        }
+        const passwordMatches = await bcrypt.compare(req.body.password, user.password);
+        if (!passwordMatches){
+            return res.status(400).json({message: "Wrong password"});
+        } 
+        const accessToken = generateAccessToken({
+            email: user.email
+        })
+        return res.status(200).json({accessToken: accessToken});
+
+    } catch (err) {
+        console.log(err);
+        return res.status(400).send(err);
+    }
+}
+
+const logout = async (req: express.Request, res: express.Response) => {
+    if (!req.body.token) {
+        return res.status(400).send('Token missing');
+    }
+    try{
+        let token: BlackList = req.body;
+        await BlackList.query().insert(token);
+        return res.status(204).json({message: "Logout"});
+    }catch(err){
+        console.log(err);
+        return res.sendStatus(500);
+    }
+}
 //========= FRONT-END: GOOGLE SING IN/OUT ============
 // function onSignIn(googleUser: any) {
 //     let profile = googleUser.getBasicProfile();
