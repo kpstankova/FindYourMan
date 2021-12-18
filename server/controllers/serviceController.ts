@@ -1,5 +1,6 @@
 import Service from '../models/Service';
 import { Request, Response } from 'express';
+import { mapDateToSqlDate } from '../utils/dateMapper'
 
 const deleteService = async (req: Request, res: Response) => {
     try {
@@ -79,11 +80,6 @@ const addService = async (req: Request, res: Response) => {
     } catch (err) {
         res.status(422).json("Adding new service failed:" + err);
     }
-}
-
-
-const mapDateToSqlDate = (date: Date) => {
-    return new Date().toISOString().slice(0, 19).replace('T', ' ');
 }
 
 export { addService, deleteService, updateService, getService, getAllServices };
