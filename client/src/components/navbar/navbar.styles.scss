@@ -1,4 +1,4 @@
-@import '../../assets/globalVariables.scss';
+@import "../../assets/globalVariables.scss";
 
 .navbar-container {
     padding-top: 6px;
@@ -73,10 +73,16 @@
     color: black;
     display: flex;
     text-transform: none;
-  
+
     &:hover {
-      color: #a41d23;
-      transition: 0.5s;
-      cursor: pointer;
+        color: #a41d23;
+        transition: 0.5s;
+        cursor: pointer;
     }
-  }
+}
+
+.error-box {
+    font-size: 14px;
+    text-align: center;
+    color: red;
+}

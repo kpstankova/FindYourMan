@@ -1,9 +1,14 @@
 import { makeStyles } from "@material-ui/core";
 import { DroppedFile } from "../../redux/onboarding/onboarding.types";
+import * as Yup from 'yup'
+import { User } from "../../redux/user/user.types";
 
 export interface ProfileImageUploaderProps {
     profileImage: DroppedFile | null;
     addProfileImageAction: (data: DroppedFile) => void;
+}
+export interface OnboardingComponentProps {
+    redirectToMainPage: () => void;
 }
 
 export const onboardingForm = makeStyles(() => ({
@@ -21,4 +26,11 @@ export const onboardingForm = makeStyles(() => ({
             borderBottom: '2px solid rgb(12, 175, 149)'
         }
     }
-}))
+}));
+
+export const validationSchema = Yup.object({
+    name: Yup.string().required('Name is required'),
+    address: Yup.string().required('Address is required'),
+    vatNumber: Yup.string().required('Vat number is required'),
+    phoneNumber: Yup.string().required('Phone number is required')
+});
