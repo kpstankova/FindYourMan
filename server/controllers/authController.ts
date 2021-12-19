@@ -76,7 +76,7 @@ const loginWithGoogle = async (req: express.Request, res: express.Response) => {
     try {
         const googleUser: User = req.body;
         googleUser.password = googleUser.email;
-        const user: User = await (await User.query().select('password').where('email', googleUser.email))[0];
+        const user: User = await User.query().select('password').where('email', googleUser.email).first();
 
         if (!user) {
             req.body = googleUser;
@@ -161,4 +161,4 @@ const logout = async (req: express.Request, res: express.Response) => {
 //     return googleUserToSend;
 // }
 
-export { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, login, logout };
+export { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, SALT_ROUNDS, bcrypt };
