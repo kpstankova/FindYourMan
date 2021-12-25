@@ -6,6 +6,7 @@ import User from "./models/User";
 import authRouter from './routers/authRouter';
 import notificationRouter from "./routers/notificationRouter";
 import serviceRouter from "./routers/serviceRouter";
+import orderRouter from "./routers/orderRouter";
 
 const app: Application = express();
 export const port = 3001;
@@ -40,7 +41,9 @@ app.post("/user", async (req, res) => {
 
 app.use('/auth', authRouter);
 app.use('/service', serviceRouter);
-app.use('/email', notificationRouter)
+app.use('/email', notificationRouter);
+app.use('/order', orderRouter);
+
 
 app.listen(port, () => {
   return console.log(`server is listening on ${port}`);

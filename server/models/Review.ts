@@ -29,7 +29,7 @@ export default class Review extends Model {
             },
             publish_date: {
                 type: "string",
-                default: mapDateToSqlDate(new Date())
+                default: mapDateToSqlDate(new Date()).toString()
             }
         }
     }

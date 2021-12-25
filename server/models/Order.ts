@@ -21,11 +21,11 @@ export default class Order extends Model {
             user_id: { type: "integer" },
             create_timestamp: {
                 type: "string",
-                default: mapDateToSqlDate(new Date())
+                default: mapDateToSqlDate(new Date()).toString()
             },
             end_timestamp: {
                 type: "string",
-                default: getNextSqlDate()
+                default: getNextSqlDate().toString()
             }
         }
     }
