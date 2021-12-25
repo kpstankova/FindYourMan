@@ -61,7 +61,6 @@ const addOrder = async (req: Request, res: Response) => {
         req.body.create_timestamp = mapDateToSqlDate(req.body.create_timestamp);
 
         const order: {
-            order_id: number,
             service_id: number,
             user_id: number,
             end_timestamp?: string,
