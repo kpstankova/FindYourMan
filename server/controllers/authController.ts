@@ -162,4 +162,4 @@ const logout = async (req: express.Request, res: express.Response) => {
 //     return googleUserToSend;
 // }
 
-export { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, SALT_ROUNDS, bcrypt };
+export { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, login, logout, SALT_ROUNDS, bcrypt };

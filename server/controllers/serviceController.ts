@@ -1,6 +1,7 @@
 import Service from '../models/Service';
 import { Request, Response } from 'express';
 import { mapDateToSqlDate } from '../utils/dateMapper'
+import Review from '../models/Review';
 
 const deleteService = async (req: Request, res: Response) => {
     try {
@@ -82,4 +83,26 @@ const addService = async (req: Request, res: Response) => {
     }
 }
 
-export { addService, deleteService, updateService, getService, getAllServices };
+const addReview = async (req: Request, res: Response) => {
+    try {
+        req.body.publish_date = mapDateToSqlDate(req.body.publish_date);
+
+        const review: {
+            service_id: number,
+            user_id: number,
+            comment: string,
+            rating?: number,
+            publish_date?: string,
+        } = req.body;
+
+        await Review.query().insert(review);
+        return res.status(201).json("Review added successfully.");
+
+    }
+    catch (err) {
+        res.status(422).json("Adding review to service failed:" + err);
+    }
+}
+
+
+export { addService, deleteService, updateService, getService, getAllServices, addReview };
