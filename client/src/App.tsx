@@ -25,6 +25,7 @@ const App = (props: AppProps) => {
           <Switch>
             <Route exact={true} path="/" component={HomeComponent} />
             <Route exact={true} path="/onboarding" component={OnboardingPageComponent} />
+            <Route exact={true} path='/learn-more' component={HomeComponent} />
           </Switch>
         </ConnectedRouter>
       </div>
