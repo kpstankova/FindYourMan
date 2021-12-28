@@ -162,4 +162,3 @@ const logout = async (req: express.Request, res: express.Response) => {
 // }
 
 export { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, login, logout, SALT_ROUNDS, bcrypt };
-
