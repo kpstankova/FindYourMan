@@ -6,6 +6,7 @@ import User from "./models/User";
 import authRouter from './routers/authRouter';
 import notificationRouter from "./routers/notificationRouter";
 import serviceRouter from "./routers/serviceRouter";
+import cors from 'cors'
 
 const app: Application = express();
 export const port = 3001;
@@ -14,6 +15,7 @@ const knex = Knex(config);
 Model.knex(knex);
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("The sedulous hyena ate the antelope!");

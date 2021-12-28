@@ -1,4 +1,4 @@
-@import '../../assets/globalVariables.scss';
+@import "../../assets/globalVariables.scss";
 
 .navbar-container {
     padding-top: 6px;
@@ -57,4 +57,32 @@
             }
         }
     }
+}
+
+.navigation-link-currentUser {
+    text-align: left;
+    letter-spacing: 0px;
+    color: #ffffff;
+    opacity: 1;
+    font: normal normal bold 14px/19px Roboto;
+}
+
+.nav-link-option {
+    font-family: "DM Sans", sans-serif;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    text-transform: none;
+
+    &:hover {
+        color: #a41d23;
+        transition: 0.5s;
+        cursor: pointer;
+    }
+}
+
+.error-box {
+    font-size: 14px;
+    text-align: center;
+    color: red;
 }

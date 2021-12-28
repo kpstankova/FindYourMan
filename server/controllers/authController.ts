@@ -24,9 +24,8 @@ const changePassword = async (req: AuthenticatedUserRequest, res: express.Respon
 }
 
 const editInfo = async (req: AuthenticatedUserRequest, res: express.Response) => {
-    console.log(req.body);
     try {
-        const user: { name: string, phone: string, vat: string, address: string, profilePic: string } = req.body;
+        const user: { name: string, phone: string, vat: string, address: string, profilePic?: string } = req.body;
         const result = await User.query().patch(user).where({ email: req.user.email });
 
         if (!result) {
@@ -35,9 +34,9 @@ const editInfo = async (req: AuthenticatedUserRequest, res: express.Response) =>
         return res.status(200).send("Information edited successfully");
     } catch (err) {
         console.log(err);
-        return res.status(400).send(err);
+        return res.status(400).send("Error occured when adding the information.");
     }
-}
+};
 
 const deleteUser = async (req: AuthenticatedUserRequest, res: express.Response) => {
     try {
@@ -117,18 +116,18 @@ const comparePass = (plainPass: string, hashedPass: string) => {
 
 const login = async (req: express.Request, res: express.Response) => {
     try {
-        const user = await User.query().select('*').where({email: req.body.email}).first()
+        const user = await User.query().select('*').where({ email: req.body.email }).first()
         if (!user) {
-            return res.status(400).json({message: "User does not exists"});
+            return res.status(400).json({ message: "User does not exists" });
         }
         const passwordMatches = await bcrypt.compare(req.body.password, user.password);
-        if (!passwordMatches){
-            return res.status(400).json({message: "Wrong password"});
-        } 
+        if (!passwordMatches) {
+            return res.status(400).json({ message: "Wrong password" });
+        }
         const accessToken = generateAccessToken({
             email: user.email
         })
-        return res.status(200).json({accessToken: accessToken});
+        return res.status(200).json({ accessToken: accessToken, email: user.email, role: user.role, id: user.user_id });
 
     } catch (err) {
         console.log(err);
@@ -140,11 +139,11 @@ const logout = async (req: express.Request, res: express.Response) => {
     if (!req.body.token) {
         return res.status(400).send('Token missing');
     }
-    try{
+    try {
         let token: BlackList = req.body;
         await BlackList.query().insert(token);
-        return res.status(204).json({message: "Logout"});
-    }catch(err){
+        return res.status(204).json({ message: "Logout" });
+    } catch (err) {
         console.log(err);
         return res.sendStatus(500);
     }
@@ -162,4 +161,4 @@ const logout = async (req: express.Request, res: express.Response) => {
 //     return googleUserToSend;
 // }
 
-export { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, SALT_ROUNDS, bcrypt };
+export { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, SALT_ROUNDS, bcrypt, login, logout };
