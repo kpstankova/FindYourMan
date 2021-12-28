@@ -5,28 +5,25 @@ export interface IModalBaseAction {
 }
 
 export interface IToggleRegister extends IModalBaseAction {
-    type: ModalActionTypes.ToggleRegisterModal
+    type: ModalActionTypes.TOGGLE_REGISTER_MODAL
 }
 
 export interface IToggleLogin extends IModalBaseAction {
-    type: ModalActionTypes.ToggleLoginModal
+    type: ModalActionTypes.TOGGLE_LOGIN_MODAL
 }
 
 export interface IToggleForgotPassword extends IModalBaseAction {
-    type: ModalActionTypes.ToggleForgotPasswordModal
+    type: ModalActionTypes.TOGGLE_FORGOT_PASSWORD_MODAL
 }
 
 export interface IResetToggles extends IModalBaseAction {
-    type: ModalActionTypes.ResetTogglesModal;
+    type: ModalActionTypes.RESET_TOGGLES_MODAL;
 }
 
 export interface IToggleRegisterAsRole extends IModalBaseAction{
-    type:ModalActionTypes.ToggleRegisterAsRoleModal
+    type:ModalActionTypes.TOGGLE_REGISTER_AS_ROLE_MODAL
 }
 
-export interface ISetRegisterRole extends IModalBaseAction {
-    type: ModalActionTypes.SetRegisterRole,
-    data: string;
-}
 
-export type TModalReducerActions =IToggleRegisterAsRole | IToggleRegister | IToggleLogin | IToggleForgotPassword | IResetToggles | ISetRegisterRole;
+
+export type TModalReducerActions =IToggleRegisterAsRole | IToggleRegister | IToggleLogin | IToggleForgotPassword | IResetToggles;
