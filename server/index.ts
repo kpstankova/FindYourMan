@@ -6,6 +6,7 @@ import User from "./models/User";
 import authRouter from './routers/authRouter';
 import notificationRouter from "./routers/notificationRouter";
 import serviceRouter from "./routers/serviceRouter";
+import searchFilterRouter from "./routers/searchFilterRouter";
 import orderRouter from "./routers/orderRouter";
 import cors from 'cors'
 
@@ -45,6 +46,7 @@ app.post("/user", async (req, res) => {
 app.use('/auth', authRouter);
 app.use('/service', serviceRouter);
 app.use('/email', notificationRouter);
+app.use('/search', searchFilterRouter);
 app.use('/order', orderRouter);
 
 
