@@ -6,13 +6,15 @@ import { RegisterWrapperProps, wrapperStyles } from "./register-wrapper.types";
 import Backdrop from '@material-ui/core/Backdrop';
 import { Link } from 'react-router-dom';
 import { StoreState } from "../../redux/root-reducer";
-import { IResetToggles, ISetRegisterRole, IToggleRegister, TModalReducerActions } from "../../redux/modal-visibility/modal.actions";
+import { IResetToggles, IToggleRegister, TModalReducerActions } from "../../redux/modal-visibility/modal.actions";
 import { ModalActionTypes } from "../../redux/modal-visibility/modal.types";
 import { selectRegisterAsRoleModal } from "../../redux/modal-visibility/modal.selectors";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import './register-wrapper.styles.scss';
 import { RoleTypes } from "../register/register-modal.types";
+import { UserActionTypes } from "../../redux/user/user.types";
+import { ISetRegisterRole, TUserReducerActions } from "../../redux/user/user.actions";
 
 const RegisterWrapperComponent: React.FC<RegisterWrapperProps> = ({ ...props }) => {
     const {toggleRegisterAsRoleModal, resetTogglesModalAction, toggleRegisterModalAction, setRegisterRoleAction} = props;
@@ -66,11 +68,11 @@ const mapStateToProps = (state: StoreState): { toggleRegisterAsRoleModal: boolea
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
+const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReducerActions>) => {
     return {
-        resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.ResetTogglesModal }),
-        toggleRegisterModalAction: () => dispatch<IToggleRegister>({ type: ModalActionTypes.ToggleRegisterModal }),
-        setRegisterRoleAction: (data: string) => dispatch<ISetRegisterRole>({type: ModalActionTypes.SetRegisterRole, data: data})
+        resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.RESET_TOGGLES_MODAL }),
+        toggleRegisterModalAction: () => dispatch<IToggleRegister>({ type: ModalActionTypes.TOGGLE_REGISTER_MODAL }),
+        setRegisterRoleAction: (data: string) => dispatch<ISetRegisterRole>({type: UserActionTypes.SET_REGISTER_ROLE, data: data})
     }
 }
 
