@@ -1,7 +1,7 @@
 import { Model } from 'objection';
 import User from './User';
 
-export default class Service extends Model {
+export class Service extends Model {
     service_id: number;
     name: string;
     description: string;
@@ -33,7 +33,7 @@ export default class Service extends Model {
                         enum: ["Programming", "Design", "Cooking", "Mechanics", "Maths", "Entertainment"]},
             city: {type: "string"},
             contributor_id: {type: "integer"},
-            price: {type: ["float", "0"]},           
+            price: {type: ["float"]},           
             publish_date: {type: "string"},          
             discount: {type: ["float", "0"]},          
             picture: {type: ["string", "null"]},          

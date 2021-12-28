@@ -1,4 +1,4 @@
-import Service from '../models/Service';
+import {Service} from '../models/Service';
 import { Request, Response } from 'express';
 import { mapDateToSqlDate } from '../utils/dateMapper'
 
