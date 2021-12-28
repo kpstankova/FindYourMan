@@ -14,18 +14,18 @@ export default class Order extends Model {
 
     static jsonSchema = {
         type: "object",
-        required: ["order_id", "service_id", "user_id"],
+        required: ["service_id", "user_id"],
         properties: {
             order_id: { type: "integer" },
             service_id: { type: "integer" },
             user_id: { type: "integer" },
             create_timestamp: {
                 type: "string",
-                default: mapDateToSqlDate(new Date())
+                default: mapDateToSqlDate(new Date()).toString()
             },
             end_timestamp: {
                 type: "string",
-                default: getNextSqlDate()
+                default: getNextSqlDate().toString()
             }
         }
     }

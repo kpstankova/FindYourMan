@@ -17,19 +17,19 @@ export default class Review extends Model {
 
     static jsonSchema = {
         type: "object",
-        required: ["review_id", "service_id", "user_id", "comment"],
+        required: ["service_id", "user_id", "comment"],
         properties: {
             review_id: { type: "integer" },
             service_id: { type: "integer" },
             user_id: { type: "integer" },
-            comment: { type: "integer" },
+            comment: { type: "string" },
             rating: {
                 type: "integer",
                 default: 0
             },
             publish_date: {
                 type: "string",
-                default: mapDateToSqlDate(new Date())
+                default: mapDateToSqlDate(new Date()).toString()
             }
         }
     }

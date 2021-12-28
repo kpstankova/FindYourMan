@@ -7,12 +7,11 @@ const InitialState: ModalState = {
     toggleLoginModal: false,
     toggleForgotPasswordModal: false,
     toggleRegisterAsRoleModal: false,
-    registerRole: RoleTypes.CLIENT
 };
 
 export const modalReducer = (state = InitialState, action: TModalReducerActions): ModalState => {
     switch (action.type) {
-        case ModalActionTypes.ToggleRegisterModal:
+        case ModalActionTypes.TOGGLE_REGISTER_MODAL:
             return {
                 ...state,
                 toggleRegisterModal: true,
@@ -20,7 +19,7 @@ export const modalReducer = (state = InitialState, action: TModalReducerActions)
                 toggleForgotPasswordModal: false,
                 toggleRegisterAsRoleModal: false
             };
-        case ModalActionTypes.ToggleLoginModal:
+        case ModalActionTypes.TOGGLE_LOGIN_MODAL:
             return {
                 ...state,
                 toggleRegisterModal: false,
@@ -28,7 +27,7 @@ export const modalReducer = (state = InitialState, action: TModalReducerActions)
                 toggleForgotPasswordModal: false,
                 toggleRegisterAsRoleModal: false
             };
-        case ModalActionTypes.ToggleForgotPasswordModal:
+        case ModalActionTypes.TOGGLE_FORGOT_PASSWORD_MODAL:
             return {
                 ...state,
                 toggleRegisterModal: false,
@@ -36,7 +35,7 @@ export const modalReducer = (state = InitialState, action: TModalReducerActions)
                 toggleForgotPasswordModal: true,
                 toggleRegisterAsRoleModal: false
             };
-        case ModalActionTypes.ToggleRegisterAsRoleModal:
+        case ModalActionTypes.TOGGLE_REGISTER_AS_ROLE_MODAL:
             return {
                 ...state,
                 toggleRegisterModal: false,
@@ -44,12 +43,8 @@ export const modalReducer = (state = InitialState, action: TModalReducerActions)
                 toggleForgotPasswordModal: false,
                 toggleRegisterAsRoleModal: true
             }
-        case ModalActionTypes.SetRegisterRole:
-            return {
-                ...state,
-                registerRole: action.data
-            };
-        case ModalActionTypes.ResetTogglesModal:
+        
+        case ModalActionTypes.RESET_TOGGLES_MODAL:
             return InitialState;
         default:
             return state;
