@@ -1,6 +1,6 @@
 import { Model } from "objection";
 import User from './User'
-import Service from './Service'
+import { Service } from './Service'
 import { mapDateToSqlDate, getNextSqlDate } from '../utils/dateMapper'
 
 export default class Order extends Model {

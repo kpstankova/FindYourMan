@@ -1,4 +1,4 @@
-import {Service} from '../models/Service';
+import { Service } from '../models/Service';
 import { Request, Response } from 'express';
 import { mapDateToSqlDate } from '../utils/dateMapper'
 import Review from '../models/Review';
@@ -104,5 +104,19 @@ const addReview = async (req: Request, res: Response) => {
     }
 }
 
+const getAllServicesByUser = async (req: Request, res: Response) => {
+    try {
+        const services = await Service.query().select("*").where("contributor_id", req.body.contributor_id);
+        console.log(services);
+        if (!services) {
+            return res.status(404).send("No services found");
+        }
+        return res.status(200).json(services);
+    } catch (err) {
+        console.log(err);
+        res.status(400).json(err);
+    }
+}
 
-export { addService, deleteService, updateService, getService, getAllServices, addReview };
+
+export { addService, deleteService, updateService, getService, getAllServices, addReview, getAllServicesByUser };

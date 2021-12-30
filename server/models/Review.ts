@@ -1,7 +1,7 @@
 import { Model } from "objection";
 
 import User from './User'
-import Service from './Service'
+import { Service } from './Service'
 import { mapDateToSqlDate } from "../utils/dateMapper";
 
 
