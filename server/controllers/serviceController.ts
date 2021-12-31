@@ -33,8 +33,8 @@ const updateService = async (req: Request, res: Response) => {
 
 const getService = async (req: Request, res: Response) => {
     try {
-        const service = await Service.query().select('*').where('service_id', req.params.id).first();
-
+        const service = await Service.query().select('*').where('service_id', req.params.id);
+        
         if (!service) {
             return res.status(404).json("Service not found.");
         }
@@ -107,7 +107,7 @@ const addReview = async (req: Request, res: Response) => {
 const getAllServicesByUser = async (req: Request, res: Response) => {
     try {
         const services = await Service.query().select("*").where("contributor_id", req.body.contributor_id);
-        console.log(services);
+        
         if (!services) {
             return res.status(404).send("No services found");
         }
