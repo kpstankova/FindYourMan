@@ -1,10 +1,9 @@
 import { makeStyles } from "@material-ui/core";
-import * as Yup from 'yup'
-import { User } from "../../redux/user/user.types";
 
 export interface ContactUsComponentProp {
-    toggleContactUsModal: boolean
-    resetTogglesModalAction: () => void;
+    toggleContactUsModal: boolean;
+    //resetTogglesModalAction: () => void;
+    
 }
 
 export const dialogStyles = makeStyles(() => ({

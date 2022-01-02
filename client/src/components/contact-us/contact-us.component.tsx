@@ -4,20 +4,15 @@ import { dialogStyles, ContactUsComponentProp } from './contact-us.types';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { StoreState } from '../../redux/root-reducer';
-import { Dispatch } from "redux";
 import {selectContactUsModal} from '../../redux/modal-visibility/modal.selectors';
-import { IToggleContactUs } from '../../redux/modal-visibility/modal.actions';
-import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
 import Backdrop from '@material-ui/core/Backdrop';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import './login.styles.scss'
+import './contact-us.styles.scss'
 
 
 
-const contactUsComponent: React.FC<ContactUsComponentProp> = ({...props}) => {
-    console.log("fhdjjdjd");
-    const { toggleContactUsModal } = props;
+const ContactUsComponent: React.FC<ContactUsComponentProp> = ({...props}) => {
+    const { toggleContactUsModal} = props;
     
     const styles = dialogStyles();
  
@@ -58,4 +53,4 @@ const mapStateToProps = (state: StoreState): { toggleContactUsModal: boolean } =
 }
 
 
-export default connect(mapStateToProps, null)(contactUsComponent);
+export default connect(mapStateToProps, null)(ContactUsComponent);

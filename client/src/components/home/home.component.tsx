@@ -9,6 +9,8 @@ import { Dispatch } from "redux";
 import { connect } from 'react-redux';
 import { IToggleContactUs, TModalReducerActions } from '../../redux/modal-visibility/modal.actions';
 import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
+import ContactUsModal from '../contact-us/contact-us.component';
+
 
 const HomeComponent: React.FC<HomeComponentProps> = ({ ...props }) => {
     const { redirectToLearnMore, toggleContactUsModal } = props;
@@ -40,8 +42,11 @@ const HomeComponent: React.FC<HomeComponentProps> = ({ ...props }) => {
 
     return (
         <React.Fragment>
+            <ContactUsModal  />
             <div className="home-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
+          
                 <div className="home-info-container">
+               
                     {
                         openLearnMore ?
                             <div className="home-learn-more-message">{learnMoreText}</div>
@@ -49,9 +54,10 @@ const HomeComponent: React.FC<HomeComponentProps> = ({ ...props }) => {
                             <React.Fragment>
                                 <div className="home-heading-message">{headingMessage}</div>
                                 <div className="home-contex-message">{contexMessage}</div>
-
+                              
                                 <div className="home-button-container">
                                     <Button size='large' variant='contained' className='learn-more-button' style={{ borderRadius: 50 }} onClick={handleLearnMore} >Learn more</Button>
+                                   
                                     <Button style={{ borderRadius: 50 }} className='contact-us-button' onClick={handleContactUs}>Contact us</Button>
                                 </div>
                             </React.Fragment>

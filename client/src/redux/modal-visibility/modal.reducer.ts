@@ -56,7 +56,7 @@ export const modalReducer = (state = InitialState, action: TModalReducerActions)
                  toggleForgotPasswordModal: false,
                  toggleRegisterAsRoleModal: false,
                  toggleContactUsModal: true
-            }
+            };
 
         case ModalActionTypes.RESET_TOGGLES_MODAL:
             return InitialState;
