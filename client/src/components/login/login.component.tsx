@@ -160,7 +160,7 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
 const mapStateToProps = (state: StoreState): { toggleForgotPasswordModal: boolean, toggleLoginModal: boolean } => {
     return {
         toggleForgotPasswordModal: selectForgotPasswordModal(state),
-        toggleLoginModal: selectLoginModal(state)
+        toggleLoginModal: selectLoginModal(state),
     }
 }
 

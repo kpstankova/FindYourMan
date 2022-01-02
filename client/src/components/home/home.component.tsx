@@ -7,14 +7,17 @@ import { HomeComponentProps } from './home.types';
 import { push, CallHistoryMethodAction } from "connected-react-router";
 import { Dispatch } from "redux";
 import { connect } from 'react-redux';
+import { IToggleContactUs, TModalReducerActions } from '../../redux/modal-visibility/modal.actions';
+import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
 
 const HomeComponent: React.FC<HomeComponentProps> = ({ ...props }) => {
-    const { redirectToLearnMore } = props;
+    const { redirectToLearnMore, toggleContactUsModal } = props;
     const headingMessage = "Find the perfect man for anything!";
     const contexMessage = "With our site you can find yourself a person to fix your, or someone to built your home, or anyone you need!";
     const learnMoreText = "The company FINDYOURMAN was made in 2021 year due to the Covid-19 crashes. All happen when Ralitsa Apostolova and Daniel Radev got the amazing idea to build a platform where you can find yourself someone to help who can repair your problem. They got the idea because they needed someone to come and fix their sink but it was hopeless. That`s how everything happened."
 
     const [openLearnMore, setOpenLearnMore] = useState<boolean>(false);
+
 
     const history = useHistory();
 
@@ -31,6 +34,10 @@ const HomeComponent: React.FC<HomeComponentProps> = ({ ...props }) => {
         redirectToLearnMore();
     }
 
+    const handleContactUs = () => {
+        toggleContactUsModal();
+    }
+
     return (
         <React.Fragment>
             <div className="home-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
@@ -45,7 +52,7 @@ const HomeComponent: React.FC<HomeComponentProps> = ({ ...props }) => {
 
                                 <div className="home-button-container">
                                     <Button size='large' variant='contained' className='learn-more-button' style={{ borderRadius: 50 }} onClick={handleLearnMore} >Learn more</Button>
-                                    <Button style={{ borderRadius: 50 }} className='contact-us-button' >Contact us</Button>
+                                    <Button style={{ borderRadius: 50 }} className='contact-us-button' onClick={handleContactUs}>Contact us</Button>
                                 </div>
                             </React.Fragment>
                     }
@@ -55,9 +62,10 @@ const HomeComponent: React.FC<HomeComponentProps> = ({ ...props }) => {
     );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<CallHistoryMethodAction>) => {
+const mapDispatchToProps = (dispatch: Dispatch<CallHistoryMethodAction | TModalReducerActions>) => {
     return {
         redirectToLearnMore: () => dispatch(push('/learn-more')),
+        toggleContactUsModal: () => dispatch<IToggleContactUs>({type:ModalActionTypes.TOGGLE_CONTACT_US_MODAL}),
     }
 }
 

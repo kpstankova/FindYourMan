@@ -7,6 +7,7 @@ const InitialState: ModalState = {
     toggleLoginModal: false,
     toggleForgotPasswordModal: false,
     toggleRegisterAsRoleModal: false,
+    toggleContactUsModal: false,
 };
 
 export const modalReducer = (state = InitialState, action: TModalReducerActions): ModalState => {
@@ -17,7 +18,8 @@ export const modalReducer = (state = InitialState, action: TModalReducerActions)
                 toggleRegisterModal: true,
                 toggleLoginModal: false,
                 toggleForgotPasswordModal: false,
-                toggleRegisterAsRoleModal: false
+                toggleRegisterAsRoleModal: false,
+                toggleContactUsModal: false
             };
         case ModalActionTypes.TOGGLE_LOGIN_MODAL:
             return {
@@ -25,7 +27,8 @@ export const modalReducer = (state = InitialState, action: TModalReducerActions)
                 toggleRegisterModal: false,
                 toggleLoginModal: true,
                 toggleForgotPasswordModal: false,
-                toggleRegisterAsRoleModal: false
+                toggleRegisterAsRoleModal: false,
+                toggleContactUsModal: false
             };
         case ModalActionTypes.TOGGLE_FORGOT_PASSWORD_MODAL:
             return {
@@ -33,7 +36,8 @@ export const modalReducer = (state = InitialState, action: TModalReducerActions)
                 toggleRegisterModal: false,
                 toggleLoginModal: false,
                 toggleForgotPasswordModal: true,
-                toggleRegisterAsRoleModal: false
+                toggleRegisterAsRoleModal: false,
+                toggleContactUsModal: false
             };
         case ModalActionTypes.TOGGLE_REGISTER_AS_ROLE_MODAL:
             return {
@@ -41,9 +45,19 @@ export const modalReducer = (state = InitialState, action: TModalReducerActions)
                 toggleRegisterModal: false,
                 toggleLoginModal: false,
                 toggleForgotPasswordModal: false,
-                toggleRegisterAsRoleModal: true
+                toggleRegisterAsRoleModal: true,
+                toggleContactUsModal: false
+            };
+        case ModalActionTypes.TOGGLE_CONTACT_US_MODAL:
+            return {
+                 ...state,
+                 toggleRegisterModal: false,
+                 toggleLoginModal: false,
+                 toggleForgotPasswordModal: false,
+                 toggleRegisterAsRoleModal: false,
+                 toggleContactUsModal: true
             }
-        
+
         case ModalActionTypes.RESET_TOGGLES_MODAL:
             return InitialState;
         default:
