@@ -1,8 +1,9 @@
 import express from 'express';
-import { createFolder } from '../controllers/filesController';
+import { Upload, uploadProfilePic, uploadServicePic } from '../controllers/filesController';
 
 const filesRouter = express.Router();
 
-filesRouter.post('/createFolder', createFolder);
+filesRouter.post('/profilePic', Upload.single('file'), uploadProfilePic);
+filesRouter.post('/servicePic', Upload.single('file'), uploadServicePic);
 
 export default filesRouter;
