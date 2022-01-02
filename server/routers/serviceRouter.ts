@@ -4,7 +4,7 @@ import { addService, getService, updateService, deleteService, getAllServices, a
 const serviceRouter = express.Router();
 
 
-serviceRouter.get('/getByUser', getAllServicesByUser);
+serviceRouter.post('/getByUser', getAllServicesByUser);
 
 serviceRouter.delete('/delete/:id', deleteService);
 serviceRouter.post('/add', addService);

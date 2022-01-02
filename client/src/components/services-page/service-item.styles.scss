@@ -1,0 +1,57 @@
+.service-item-container {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    .upper-container {
+        display: flex;
+        width: 100%;
+        .image-container {
+            width: 15%;
+            height: 120px;
+            img {
+                width: 180px;
+                height: 120px;
+            }
+        }
+        .info-container {
+            width: 85%;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+
+            .first-row {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    }
+    .lower-container {
+        display: flex;
+        width: 1200px;
+        align-items: flex-start;
+        margin-top: 5px;
+        justify-content: space-between;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        .submit-button {
+            width: 100px;
+            letter-spacing: 0.5px;
+            line-height: 35px;
+            background-color: #5fa6ff;
+            color: white;
+            font-family: "Roboto";
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            margin: 10px auto;
+            border: none;
+            font-size: 1rem;
+        }
+    }
+}
