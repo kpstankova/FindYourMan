@@ -3,7 +3,7 @@ import { createBrowserHistory } from 'history';
 import { createStore, applyMiddleware } from 'redux';
 import storage from 'redux-persist/lib/storage';
 import { rootReducer } from './root-reducer';
-import { persistStore } from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import { logger } from 'redux-logger';
 
@@ -12,7 +12,8 @@ export const history = createBrowserHistory()
 export const rootConfig = {
     key: 'root',
     storage: storage,
-    blacklist: ['modal']
+    blacklist: ['modal'],
+    whitelist: ['user']
 };
 
 export const store = createStore(

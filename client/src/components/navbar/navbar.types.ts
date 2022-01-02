@@ -5,12 +5,16 @@ export interface NavbarProps {
     currentUser: User;
     toggleLoginModalAction: () => void;
     toggleRegisterAsRoleModalAction: () => void;
+    redirectToMainPage: () => void;
+    redirectToHomePage: () => void;
 };
 
 export interface UserNavigationProps {
+    currentUser: User;
     logoutUserSuccessAction: () => void;
     logoutUserErrorAction: (data: string) => void;
     redirectToHome: () => void;
+    redirectToMyProfile: () => void;
 }
 
 export const useStyles = makeStyles((theme) => ({

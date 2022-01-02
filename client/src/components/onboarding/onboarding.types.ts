@@ -1,7 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import { DroppedFile } from "../../redux/onboarding/onboarding.types";
 import * as Yup from 'yup'
-import { User } from "../../redux/user/user.types";
 
 export interface ProfileImageUploaderProps {
     profileImage: DroppedFile | null;

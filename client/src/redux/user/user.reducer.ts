@@ -50,7 +50,7 @@ export const userReducer = (state = InitialState, action: TUserReducerActions): 
                 registerRole: action.data
             };
         default:
-            return InitialState;
+            return state;
     }
 }
 
