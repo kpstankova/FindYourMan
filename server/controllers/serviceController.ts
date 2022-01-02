@@ -118,5 +118,18 @@ const getAllServicesByUser = async (req: Request, res: Response) => {
     }
 }
 
+const getAllReviews = async (req: Request, res: Response) => {
+    try {
+        const reviews = await Review.query().select('*').where("service_id", req.body.service_id);
+        console.log(reviews);
+        if(reviews.length === 0) {
+            return res.status(404).send("There is no reviews for this service");
+        }
+        return res.status(200).json(reviews);
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
+}
 
-export { addService, deleteService, updateService, getService, getAllServices, addReview, getAllServicesByUser };
+export { addService, deleteService, updateService, getService, getAllServices, addReview, getAllServicesByUser, getAllReviews };

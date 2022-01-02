@@ -1,5 +1,5 @@
 import express from 'express';
-import { addService, getService, updateService, deleteService, getAllServices, addReview, getAllServicesByUser } from '../controllers/serviceController';
+import { addService, getService, updateService, deleteService, getAllServices, addReview, getAllServicesByUser, getAllReviews } from '../controllers/serviceController';
 
 const serviceRouter = express.Router();
 
@@ -11,6 +11,7 @@ serviceRouter.post('/add', addService);
 serviceRouter.put('/update', updateService);
 
 serviceRouter.post('/review', addReview);
+serviceRouter.post('/allReviews', getAllReviews);
 
 serviceRouter.get('/', getAllServices);
 serviceRouter.get('/:id', getService);
