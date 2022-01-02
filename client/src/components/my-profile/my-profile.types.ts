@@ -1,12 +1,7 @@
 import { makeStyles } from "@material-ui/core";
-import { DroppedFile } from "../../redux/onboarding/onboarding.types";
 import * as Yup from 'yup'
 
-export interface ProfileImageUploaderProps {
-    profileImage: DroppedFile | null;
-    addProfileImageAction: (data: DroppedFile) => void;
-}
-export interface OnboardingComponentProps {
+export interface MyProfileComponentProps {
     redirectToMainPage: () => void;
 }
 

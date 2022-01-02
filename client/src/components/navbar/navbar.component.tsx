@@ -13,15 +13,25 @@ import ForgotPasswordModalComponent from '../forgot-password/forgot-password.com
 import { StoreState } from '../../redux/root-reducer';
 import { User } from '../../redux/user/user.types';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import UserNavigationBarComponent from './user-navbar.component'
+import UserNavigationBarComponent from './user-navbar.component';
+import { push, CallHistoryMethodAction } from "connected-react-router";
+
 const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
-    const { currentUser, toggleLoginModalAction, toggleRegisterAsRoleModalAction } = props;
+    const { currentUser, toggleLoginModalAction, toggleRegisterAsRoleModalAction, redirectToHomePage, redirectToMainPage } = props;
     const handleOpenLogin = () => {
         toggleLoginModalAction();
     }
 
     const handleOpenRegisterWrapper = () => {
         toggleRegisterAsRoleModalAction();
+    }
+
+    const handleLogoClick = () => {
+        if (currentUser.id) {
+            redirectToMainPage();
+        } else {
+            redirectToHomePage();
+        }
     }
 
     return (
@@ -32,9 +42,9 @@ const Navbar: React.FC<NavbarProps> = ({ ...props }) => {
             <ForgotPasswordModalComponent />
             <div className="navbar-header-container">
                 <div className="navbar-logo-container">
-                    <div className="navbar-white-text">FIND</div>
-                    <div className='navbar-black-text'>your</div>
-                    <div className='navbar-white-text'>MAN</div>
+                    <div className="navbar-white-text" onClick={handleLogoClick}>FIND</div>
+                    <div className='navbar-black-text' onClick={handleLogoClick}>your</div>
+                    <div className='navbar-white-text' onClick={handleLogoClick}>MAN</div>
                 </div>
                 {
                     currentUser && currentUser.email ?
@@ -57,10 +67,12 @@ const mapStateToProps = (state: StoreState): { currentUser: User } => {
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
+const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions |  CallHistoryMethodAction>) => {
     return {
         toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.TOGGLE_LOGIN_MODAL }),
-        toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.TOGGLE_REGISTER_AS_ROLE_MODAL })
+        toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.TOGGLE_REGISTER_AS_ROLE_MODAL }),
+        redirectToMainPage: () => dispatch(push('/services')),
+        redirectToHomePage: () => dispatch(push('/')),
     }
 }
 

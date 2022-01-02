@@ -3,13 +3,16 @@ import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import './App.scss';
 import { History } from "history";
-import { store } from './redux/store';
+import { persistedStore, store } from './redux/store';
 import { ConnectedRouter } from 'connected-react-router';
 import Navbar from './components/navbar/navbar.component';
 import HomeComponent from './components/home/home.component';
 import OnboardingPageComponent from './components/onboarding/onboarding.component';
-
-
+import MyServicesPage from './components/services-page/my-services-page';
+import MyProfileComponent from './components/my-profile/my-profile.component'
+import { PersistGate } from 'redux-persist/integration/react';
+import AddServiceComponent from  './components/services-page/add-service.component'
+import ServicesMainPage from './components/services-page/services-main-page';
 interface AppProps {
   history: History;
 }
@@ -19,16 +22,23 @@ const App = (props: AppProps) => {
 
   return (
     <Provider store={store}>
-      <div className="App">
-        <ConnectedRouter history={history}>
-          <Navbar/>
-          <Switch>
-            <Route exact={true} path="/" component={HomeComponent} />
-            <Route exact={true} path="/onboarding" component={OnboardingPageComponent} />
-            <Route exact={true} path='/learn-more' component={HomeComponent} />
-          </Switch>
-        </ConnectedRouter>
-      </div>
+      <PersistGate loading={null} persistor={persistedStore}>
+
+        <div className="App">
+          <ConnectedRouter history={history}>
+            <Navbar />
+            <Switch>
+              <Route exact={true} path="/" component={HomeComponent} />
+              <Route exact={true} path="/onboarding" component={OnboardingPageComponent} />
+              <Route exact={true} path='/learn-more' component={HomeComponent} />
+              <Route exact={true} path='/my-services' component={MyServicesPage} />
+              <Route exact={true} path='/my-profile' component={MyProfileComponent} />
+              <Route exact={true} path ='/add-new-service' component={AddServiceComponent} />
+              <Route exact={true} path='/services' component={ServicesMainPage} />
+            </Switch>
+          </ConnectedRouter>
+        </div>
+      </PersistGate>
     </Provider>
   );
 }

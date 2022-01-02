@@ -7,11 +7,14 @@ import { headers } from '../register/register-modal.types';
 import { connect } from 'react-redux';
 import { ILogoutFailure, ILogoutSuccess, TUserReducerActions } from '../../redux/user/user.actions';
 import { Dispatch } from "redux";
-import { UserActionTypes } from '../../redux/user/user.types';
+import { User, UserActionTypes } from '../../redux/user/user.types';
 import { push, CallHistoryMethodAction } from "connected-react-router";
 import './navbar.styles.scss'
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { StoreState } from '../../redux/root-reducer';
+
 const UserNavigationBarComponent: React.FC<UserNavigationProps> = ({ ...props }) => {
-    const { logoutUserSuccessAction, logoutUserErrorAction, redirectToHome } = props;
+    const { currentUser, logoutUserSuccessAction, logoutUserErrorAction, redirectToHome, redirectToMyProfile } = props;
     const classes = useStyles();
     const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorElement);
@@ -20,6 +23,7 @@ const UserNavigationBarComponent: React.FC<UserNavigationProps> = ({ ...props })
     };
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        event.preventDefault();
         setAnchorElement(event.currentTarget);
     };
 
@@ -62,16 +66,28 @@ const UserNavigationBarComponent: React.FC<UserNavigationProps> = ({ ...props })
                 }}
                 onClose={handleClose}
                 TransitionComponent={Fade}>
-                <MenuItem>
-                    <RouterLink className="nav-link-option" to="/" onClick={handleClose}>My profile</RouterLink>
+                <MenuItem className="nav-link-option" onClick={() => redirectToMyProfile()} >
+                    My profile
                 </MenuItem>
                 <MenuItem>
-                    <RouterLink className="nav-link-option" to="/" onClick={handleClose}>History of orders</RouterLink>
+                    <RouterLink className="nav-link-option" to="/" >History of orders</RouterLink>
                 </MenuItem>
+                {
+                    currentUser && currentUser.role !== 'client' ? 
+                    <MenuItem>
+                        <RouterLink className="nav-link-option" to="/my-services" onClick={handleClose}>My services</RouterLink>
+                    </MenuItem> : null
+                }
                 <MenuItem onClick={handleLogout}>Exit</MenuItem>
             </Menu>
         </React.Fragment>
     );
+}
+
+const mapStateToProps = (state: StoreState): { currentUser: User } => {
+    return {
+        currentUser: selectCurrentUser(state),
+    }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<TUserReducerActions | CallHistoryMethodAction>) => {
@@ -79,7 +95,8 @@ const mapDispatchToProps = (dispatch: Dispatch<TUserReducerActions | CallHistory
         logoutUserSuccessAction: () => dispatch<ILogoutSuccess>({type: UserActionTypes.LOGOUT_SUCESS}),
         logoutUserErrorAction: (data: string) => dispatch<ILogoutFailure>({ type: UserActionTypes.LOGOUT_FAILED, data: data}),
         redirectToHome: () => dispatch(push('/')),
+        redirectToMyProfile: () => dispatch(push('/my-profile'))
     }
 }
 
-export default connect(null, mapDispatchToProps)(UserNavigationBarComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(UserNavigationBarComponent);

@@ -25,7 +25,8 @@ const routerConfig = {
 
 const userConfig = {
     key: 'user',
-    storage: storage
+    storage: storage,
+    whitelist: ['user']
 }
 
 export const rootReducer = (history: any) => combineReducers<StoreState>({
