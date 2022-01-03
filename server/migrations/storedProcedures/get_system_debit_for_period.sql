@@ -1,0 +1,8 @@
+CREATE DEFINER=`YOUR_PASS_HERE`@`localhost` PROCEDURE `get_system_debit_for_period`(in months integer)
+BEGIN
+	SELECT SUM(AMOUNT) 
+	FROM TRANSACTION
+	WHERE DEBIT = 'SYSTEM_IBAN'
+	AND TIMESTAMP BETWEEN CURRENT_TIMESTAMP() 
+    AND DATE_SUB(current_timestamp(), INTERVAL months MONTH);
+END
