@@ -1,19 +1,20 @@
 import express from 'express';
 import { addService, getService, updateService, deleteService, getAllServices, addReview, getAllServicesByUser } from '../controllers/serviceController';
+import authenticateToken from '../middleware/authenticateToken';
 
 const serviceRouter = express.Router();
 
 
-serviceRouter.post('/getByUser', getAllServicesByUser);
+serviceRouter.post('/getByUser',authenticateToken , getAllServicesByUser);
 
-serviceRouter.delete('/delete/:id', deleteService);
-serviceRouter.post('/add', addService);
-serviceRouter.put('/update', updateService);
+serviceRouter.delete('/delete/:id',authenticateToken , deleteService);
+serviceRouter.post('/add',authenticateToken , addService);
+serviceRouter.put('/update',authenticateToken , updateService);
 
-serviceRouter.post('/review', addReview);
+serviceRouter.post('/review',authenticateToken , addReview);
 
-serviceRouter.get('/', getAllServices);
-serviceRouter.get('/:id', getService);
+serviceRouter.get('/',authenticateToken , getAllServices);
+serviceRouter.get('/:id',authenticateToken , getService);
 
 export default serviceRouter;
 

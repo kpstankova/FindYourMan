@@ -2,6 +2,7 @@ import Express from 'express';
 import Knex from 'knex';
 import {Service} from '../models/Service';
 import config from '../knexfile';
+import { AuthenticatedUserRequest } from '../interfaces/authenticatedRequest';
 
 // {
 //     "name": "name",
@@ -15,7 +16,7 @@ import config from '../knexfile';
 //     "rating": ""
 // }
 
-const services = async (req: Express.Request, res: Express.Response) => {
+const services = async (req: AuthenticatedUserRequest, res: Express.Response) => {
     try {
         const minPrice = req.body.minPrice != "" ? parseFloat(req.body.minPrice) : 0;
         const maxPrice = req.body.maxPrice != "" ? parseFloat(req.body.maxPrice) : Number.MAX_VALUE;
@@ -34,7 +35,7 @@ const services = async (req: Express.Request, res: Express.Response) => {
     }
 };
 
-const searchServices = async (req: Express.Request, res: Express.Response) => {//1y2m5w3d5h, 0y0m4w0d0h
+const searchServices = async (req: AuthenticatedUserRequest, res: Express.Response) => {//1y2m5w3d5h, 0y0m4w0d0h
     try {
         const result = await services(req, res);
         if (result) {
@@ -48,7 +49,7 @@ const searchServices = async (req: Express.Request, res: Express.Response) => {/
     }
 };
 
-const orderByRating = async (req: Express.Request, res: Express.Response) => {
+const orderByRating = async (req: AuthenticatedUserRequest, res: Express.Response) => {
     try {
         const result = await services(req, res);
         if (result) {
@@ -62,7 +63,7 @@ const orderByRating = async (req: Express.Request, res: Express.Response) => {
     }
 };
 
-const orderByPrice = async (req: Express.Request, res: Express.Response) => {
+const orderByPrice = async (req: AuthenticatedUserRequest, res: Express.Response) => {
     try {
         try {
             const result = await services(req, res);

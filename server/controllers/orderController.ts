@@ -1,8 +1,9 @@
 import Order from '../models/Order';
 import { Request, Response } from 'express';
 import { mapDateToSqlDate } from '../utils/dateMapper'
+import { AuthenticatedUserRequest } from '../interfaces/authenticatedRequest';
 
-const deleteOrder = async (req: Request, res: Response) => {
+const deleteOrder = async (req: AuthenticatedUserRequest, res: Response) => {
     try {
         await Order.query().where('order_id', req.params.id).delete();
         return res.status(200).json("Successfully deleted order.");
@@ -11,7 +12,7 @@ const deleteOrder = async (req: Request, res: Response) => {
     }
 }
 
-const updateOrder = async (req: Request, res: Response) => {
+const updateOrder = async (req: AuthenticatedUserRequest, res: Response) => {
     try {
         const orderId: Order = req.body.order_id;
 
@@ -30,7 +31,7 @@ const updateOrder = async (req: Request, res: Response) => {
     }
 }
 
-const getOrder = async (req: Request, res: Response) => {
+const getOrder = async (req: AuthenticatedUserRequest, res: Response) => {
     try {
         const order = await Order.query().select('*').where('order_id', req.params.id).first();
 
@@ -45,7 +46,7 @@ const getOrder = async (req: Request, res: Response) => {
     }
 }
 
-const getAllOrders = async (req: Request, res: Response) => {
+const getAllOrders = async (req: AuthenticatedUserRequest, res: Response) => {
     try {
         const result: Order[] = await Order.query().select("*");
         return res.status(200).json(result);
@@ -56,7 +57,7 @@ const getAllOrders = async (req: Request, res: Response) => {
 }
 
 
-const addOrder = async (req: Request, res: Response) => {
+const addOrder = async (req: AuthenticatedUserRequest, res: Response) => {
     try {
         req.body.create_timestamp = mapDateToSqlDate(req.body.create_timestamp);
 
