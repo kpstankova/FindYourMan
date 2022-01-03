@@ -1,6 +1,6 @@
 import express from 'express';
-import { addService, getService, updateService, deleteService, getAllServices, addReview, getAllServicesByUser } from '../controllers/serviceController';
 import authenticateToken from '../middleware/authenticateToken';
+import { addService, getService, updateService, deleteService, getAllServices, addReview, getAllServicesByUser, getAllReviews } from '../controllers/serviceController';
 
 const serviceRouter = express.Router();
 

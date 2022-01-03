@@ -2,6 +2,10 @@ import Order from '../models/Order';
 import { Request, Response } from 'express';
 import { mapDateToSqlDate } from '../utils/dateMapper'
 import { AuthenticatedUserRequest } from '../interfaces/authenticatedRequest';
+import User from '../models/User';
+import { Service } from '../models/Service';
+import Transaction from '../models/Transaction';
+import { SYSTEM_IBAN } from '../migrations/20211114131315_create_user_table';
 
 const deleteOrder = async (req: AuthenticatedUserRequest, res: Response) => {
     try {
@@ -71,9 +75,43 @@ const addOrder = async (req: AuthenticatedUserRequest, res: Response) => {
             order.end_timestamp = mapDateToSqlDate(req.body.end_timestamp).toString();
         }
 
-        await Order.query().insert(order);
+        //transactions
+        const creditUser: User = await User.query().select('*').where('user_id', order.user_id).first();
+        const service: Service = await Service.query().select('*').where('service_id', order.service_id).first();
+        const debitUser: User = await User.query().select('*').where('user_id', service.contributor_id).first();
 
-        return res.status(201).json("Order added successfully.");
+        if (debitUser.role != "client" && debitUser.role != "admin") {
+            let percent;
+            if (debitUser.role === "freelancer") {
+                percent = 0.2;
+            }
+            else if (debitUser.role === "company") {
+                percent = 0.3;
+            }
+            const systemAmount = percent * service.price;
+
+            const userTransaction = {
+                credit: creditUser.iban,
+                debit: debitUser.iban,
+                amount: service.price - systemAmount
+            }
+
+            const sysTransaction = {
+                credit: creditUser.iban,
+                debit: SYSTEM_IBAN,
+                amount: systemAmount
+            }
+
+            if (!await Transaction.query().insert(userTransaction) ||
+                !await Transaction.query().insert(sysTransaction)) {
+                return res.status(422).json("Could not make transaction. Adding new order failed.");
+            }
+        }
+        
+        if (await Order.query().insert(order)) {
+            return res.status(201).json("Order added successfully.");
+        }
+
     } catch (err) {
         res.status(422).json("Adding new order failed:" + err);
     }

@@ -1,4 +1,8 @@
-import { Knex } from "knex";
+import knex, { Knex } from "knex";
+import { bcrypt, SALT_ROUNDS } from "../controllers/authController";
+import User from "../models/User";
+
+export const SYSTEM_IBAN: string = 'SYSTEM_IBAN';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable("user", (table: Knex.TableBuilder) => {
@@ -14,6 +18,19 @@ export async function up(knex: Knex): Promise<void> {
     table.integer("verified").notNullable().defaultTo(0);
     table.float("rating").notNullable().defaultTo(0);
     table.string("last_logged_in");
+    table.string("iban").notNullable().unique().index();
+  }).then(async () => { 
+    const hash = await bcrypt.hash("3edc#EDC", await bcrypt.genSalt(SALT_ROUNDS));
+    
+    await knex("user").insert([
+      {email: "find.your.man.project@gmail.com",
+      password: hash,
+      role: "admin",
+      name: "SYS_ADMIN",
+      verified: 1,
+      iban: SYSTEM_IBAN
+    }
+  ]);  
   });
 }
 
