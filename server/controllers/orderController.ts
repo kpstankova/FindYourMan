@@ -6,7 +6,7 @@ import User from '../models/User';
 import { Service } from '../models/Service';
 import Transaction from '../models/Transaction';
 import { SYSTEM_IBAN } from '../migrations/20211114131315_create_user_table';
-
+import { bcrypt,SALT_ROUNDS } from './authController';
 const deleteOrder = async (req: AuthenticatedUserRequest, res: Response) => {
     try {
         await Order.query().where('order_id', req.params.id).delete();
@@ -91,13 +91,13 @@ const addOrder = async (req: AuthenticatedUserRequest, res: Response) => {
             const systemAmount = percent * service.price;
 
             const userTransaction = {
-                credit: creditUser.iban,
-                debit: debitUser.iban,
+                credit: await bcrypt.hash(creditUser.iban, await bcrypt.genSalt(SALT_ROUNDS)),
+                debit: await bcrypt.hash(debitUser.iban, await bcrypt.genSalt(SALT_ROUNDS)),
                 amount: service.price - systemAmount
             }
 
             const sysTransaction = {
-                credit: creditUser.iban,
+                credit: await bcrypt.hash(creditUser.iban, await bcrypt.genSalt(SALT_ROUNDS)),
                 debit: SYSTEM_IBAN,
                 amount: systemAmount
             }

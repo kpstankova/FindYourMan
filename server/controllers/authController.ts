@@ -58,6 +58,7 @@ const register = async (req: express.Request, res: express.Response) => {
     try {
         const user: User = req.body;
         user.password = hashPassword(user.password);
+        user.iban = hashPassword(user.iban);
 
         const result = await User.query()
             .insert(user);

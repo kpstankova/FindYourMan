@@ -35,9 +35,9 @@ export class Service extends Model {
             contributor_id: {type: "integer"},
             price: {type: ["float"]},           
             publish_date: {type: "string"},          
-            discount: {type: ["float", "0"]},          
+            discount: { type: ["float"] },          
             picture: {type: ["string", "null"]},          
-            rating: {type: ["float", "0"]},
+            rating: { type: ["float"] },
         }
     }
 
