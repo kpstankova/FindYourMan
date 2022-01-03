@@ -26,7 +26,9 @@ const changePassword = async (req: AuthenticatedUserRequest, res: express.Respon
 const editInfo = async (req: AuthenticatedUserRequest, res: express.Response) => {
     try {
         const user: { name: string, phone: string, vat: string, address: string, profilePic?: string } = req.body;
+        console.log(user);
         const result = await User.query().patch(user).where({ email: req.user.email });
+        console.log(result);
 
         if (!result) {
             return res.status(400).send("User not found");
@@ -122,7 +124,7 @@ const login = async (req: express.Request, res: express.Response) => {
         }
         const passwordMatches = await bcrypt.compare(req.body.password, user.password);
         if (!passwordMatches) {
-            return res.status(400).json({ message: "Wrong password" });
+            return res.status(401).json({ message: "Wrong password" });
         }
         const accessToken = generateAccessToken({
             email: user.email

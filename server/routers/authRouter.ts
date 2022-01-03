@@ -3,7 +3,7 @@ import { changePassword, editInfo, deleteUser, register, loginWithGoogle, google
 import authenticateToken from '../middleware/authenticateToken';
 const authRouter = express.Router();
 
-authRouter.put('/changePassword',authenticateToken ,changePassword);
+authRouter.put('/changePassword',authenticateToken, changePassword);
 authRouter.put('/editInfo', authenticateToken, editInfo);
 authRouter.delete('/deleteUser',authenticateToken, deleteUser);
 
