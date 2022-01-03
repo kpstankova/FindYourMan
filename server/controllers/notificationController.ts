@@ -35,11 +35,8 @@ const sendForgotPasswordEmail = async (req: Request, res: Response) => {
 }
 
 const sendVerificationEmail = async (req: Request, res: Response) => {
-    // TO DO!
-    const code = 'FYM';
-
     const details: MailDetails = addDetails(req.body.to, "FYM Account Verification",
-        `<h1 style="text-align:center">Please click <a href="http://localhost:${port}/email/virifyAccount/${req.body.to}"> here </a> to verify your account!</h1>`)
+        `<h1 style="text-align:center">Please click <a href="http://localhost:${port}/email/verifyAccount/${req.body.to}"> here </a> to verify your account!</h1>`)
     sendMail(details, res);
 }
 

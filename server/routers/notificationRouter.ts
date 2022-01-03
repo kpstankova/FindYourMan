@@ -4,6 +4,6 @@ const notificationRouter = express.Router();
 
 notificationRouter.post('/forgotPassword',sendForgotPasswordEmail);
 notificationRouter.post('/verification',sendVerificationEmail);
-notificationRouter.get('/virifyAccount/:email', verifyAccount);
+notificationRouter.get('/verifyAccount/:email', verifyAccount);
 
 export default notificationRouter;
