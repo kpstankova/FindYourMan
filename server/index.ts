@@ -9,6 +9,7 @@ import serviceRouter from "./routers/serviceRouter";
 import searchFilterRouter from "./routers/searchFilterRouter";
 import orderRouter from "./routers/orderRouter";
 import cors from 'cors'
+import filesRouter from "./routers/filesRouter";
 
 
 const app: Application = express();
@@ -48,6 +49,7 @@ app.use('/service', serviceRouter);
 app.use('/email', notificationRouter);
 app.use('/search', searchFilterRouter);
 app.use('/order', orderRouter);
+app.use('/files', filesRouter);
 
 
 app.listen(port, () => {

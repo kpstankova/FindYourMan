@@ -3,9 +3,9 @@ import { orderByPrice, orderByRating, searchServices } from '../controllers/help
 
 const searchFilterRouter = express.Router();
 
-searchFilterRouter.get('/all', searchServices);
-searchFilterRouter.get('/sortByRating', orderByRating);
-searchFilterRouter.get('/sortByPrice', orderByPrice);
+searchFilterRouter.post('/all', searchServices);
+searchFilterRouter.post('/sortByRating', orderByRating);
+searchFilterRouter.post('/sortByPrice', orderByPrice);
 
 export default searchFilterRouter;
 
