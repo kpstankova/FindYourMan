@@ -107,8 +107,8 @@ const addReview = async (req: Request, res: Response) => {
 const getAllServicesByUser = async (req: Request, res: Response) => {
     try {
         const services = await Service.query().select("*").where("contributor_id", req.body.contributor_id);
-        
-        if (!services) {
+
+        if (services.length === 0) {
             return res.status(404).send("No services found");
         }
         return res.status(200).json(services);

@@ -10,6 +10,7 @@ import searchFilterRouter from "./routers/searchFilterRouter";
 import orderRouter from "./routers/orderRouter";
 import { paymentRouter } from "./routers/paymentRouter";
 import cors from "cors";
+import filesRouter from "./routers/filesRouter";
 
 const app: Application = express();
 export const port = 3001;
@@ -30,6 +31,7 @@ app.use("/email", notificationRouter);
 app.use("/search", searchFilterRouter);
 app.use("/order", orderRouter);
 app.use("/payment", paymentRouter);
+app.use("/files", filesRouter);
 
 app.listen(port, () => {
   return console.log(`server is listening on ${port}`);
