@@ -13,12 +13,13 @@ export default class User extends Model {
   verified?: number;
   rating?: number;
   lastLoggedIn?: string;
+  iban: string;
 
   static tableName = "user";
 
   static jsonSchema = {
     type: "object",
-    required: ["email", "password", "role"],
+    required: ["email", "password", "role", "iban"],
 
     properties: {
       user_id: { type: "integer" },
@@ -27,7 +28,7 @@ export default class User extends Model {
                 maxLength: 128 },
       password: { type: "string" },
       role: { type: "string", 
-              enum: ["freelancer", "client", "company"], 
+              enum: ["freelancer", "client", "company", "admin"], 
               default: "client" },
       name: { type: "string", 
               minLength: 1 },
@@ -40,6 +41,7 @@ export default class User extends Model {
       verified: { type: "integer" },
       rating: { type: "float" },
       last_logged_in: { type: "string" },
+      iban: {type: "string"}
     },
   };
 }
