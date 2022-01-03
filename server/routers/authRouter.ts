@@ -1,5 +1,5 @@
 import express from 'express'
-import { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, login, logout } from '../controllers/authController';
+import { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, login, logout, getUserById } from '../controllers/authController';
 import authenticateToken from '../middleware/authenticateToken';
 const authRouter = express.Router();
 
@@ -13,4 +13,6 @@ authRouter.post('/logout/google', googleSignOut);
 
 authRouter.post('/login', login);
 authRouter.post('/logout', logout);
+
+authRouter.get('/:id', authenticateToken, getUserById);
 export default authRouter;

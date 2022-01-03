@@ -150,6 +150,20 @@ const logout = async (req: express.Request, res: express.Response) => {
         return res.sendStatus(500);
     }
 }
+
+const getUserById = async (req: AuthenticatedUserRequest, res: express.Response) => {
+    try {
+        const result = await User.query().select("*").where("user_id", req.params.id).first();
+        console.log(result);
+        if (!result) {
+            return res.status(404).send("User not found");
+        }
+        return res.status(200).send(result);
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
+}
 //========= FRONT-END: GOOGLE SING IN/OUT ============
 // function onSignIn(googleUser: any) {
 //     let profile = googleUser.getBasicProfile();
@@ -163,4 +177,4 @@ const logout = async (req: express.Request, res: express.Response) => {
 //     return googleUserToSend;
 // }
 
-export { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, login, logout, SALT_ROUNDS, bcrypt };
+export { changePassword, editInfo, deleteUser, register, loginWithGoogle, googleSignOut, login, logout, getUserById, SALT_ROUNDS, bcrypt };
