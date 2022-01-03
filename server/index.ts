@@ -3,13 +3,13 @@ import Knex from "knex";
 import { Model } from "objection";
 import config from "./knexfile";
 import User from "./models/User";
-import authRouter from './routers/authRouter';
+import authRouter from "./routers/authRouter";
 import notificationRouter from "./routers/notificationRouter";
 import serviceRouter from "./routers/serviceRouter";
 import searchFilterRouter from "./routers/searchFilterRouter";
 import orderRouter from "./routers/orderRouter";
-import cors from 'cors'
-
+import { paymentRouter } from "./routers/paymentRouter";
+import cors from "cors";
 
 const app: Application = express();
 export const port = 3001;
@@ -24,31 +24,12 @@ app.get("/", (req, res) => {
   res.send("The sedulous hyena ate the antelope!");
 });
 
-app.get("/user", async (req, res) => {
-  const users = await User.query().select("*");
-  console.log(users);
-  res.status(200).send("Okay");
-});
-
-app.post("/user", async (req, res) => {
-  try {
-    await User.query().insert({
-      email: "testemail@gmail.com",
-      password: "sbycryptpolzvai",
-      role: "nekavtam",
-    });
-    res.status(200).send("auf");
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.use('/auth', authRouter);
-app.use('/service', serviceRouter);
-app.use('/email', notificationRouter);
-app.use('/search', searchFilterRouter);
-app.use('/order', orderRouter);
-
+app.use("/auth", authRouter);
+app.use("/service", serviceRouter);
+app.use("/email", notificationRouter);
+app.use("/search", searchFilterRouter);
+app.use("/order", orderRouter);
+app.use("/payment", paymentRouter);
 
 app.listen(port, () => {
   return console.log(`server is listening on ${port}`);

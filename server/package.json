@@ -41,11 +41,13 @@
   "dependencies": {
     "@types/gapi": "0.0.41",
     "@types/gapi.auth2": "0.0.55",
+    "@types/stripe": "^8.0.417",
     "express": "^4.16.4",
     "knex": "^0.95.15",
     "mysql": "^2.18.1",
     "nodemailer": "^6.7.2",
     "objection": "^2.2.17",
+    "stripe": "^8.195.0",
     "ts-node": "^10.4.0"
   }
 }
