@@ -2,6 +2,7 @@ import { Service } from '../models/Service';
 import { Request, Response } from 'express';
 import { mapDateToSqlDate } from '../utils/dateMapper'
 import Review from '../models/Review';
+import Order from '../models/Order';
 
 const deleteService = async (req: Request, res: Response) => {
     try {
@@ -95,9 +96,14 @@ const addReview = async (req: Request, res: Response) => {
             publish_date?: string,
         } = req.body;
 
-        await Review.query().insert(review);
-        return res.status(201).json("Review added successfully.");
-
+        if (await Order.query().select('*').where("user_id", review.user_id)) {
+            if (await Review.query().insert(review)) {
+                return res.status(201).json("Review added successfully.");
+            }
+        }
+        else {
+            res.status(422).json("Can not add review, because you have no orders for this service.");
+        }
     }
     catch (err) {
         res.status(422).json("Adding review to service failed:" + err);
