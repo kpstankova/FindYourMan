@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { generateAccessToken } from '../utils/generateAccessToken';
 import BlackList from '../models/BlackList';
 import { AuthenticatedUserRequest } from '../interfaces/authenticatedRequest';
+import { mapDateToSqlDate } from '../utils/dateMapper';
 
 const SALT_ROUNDS = 10;
 
@@ -119,6 +120,11 @@ const comparePass = (plainPass: string, hashedPass: string) => {
 const login = async (req: express.Request, res: express.Response) => {
     try {
         const user = await User.query().select('*').where({ email: req.body.email }).first()
+                // user.last_logged_in = mapDateToSqlDate(new Date());
+                // console.log(user.last_logged_in);
+                // const result = await User.query().update(user);
+                // console.log(result);
+
         if (!user) {
             return res.status(400).json({ message: "User does not exists" });
         }
@@ -126,9 +132,14 @@ const login = async (req: express.Request, res: express.Response) => {
         if (!passwordMatches) {
             return res.status(401).json({ message: "Wrong password" });
         }
+        // user.last_logged_in = mapDateToSqlDate(new Date());
+        // user.verified = 1;
         const accessToken = generateAccessToken({
             email: user.email
         })
+        
+        // console.log(result);
+        // console.log(typeof(result));
         return res.status(200).json({ accessToken: accessToken, email: user.email, role: user.role, id: user.user_id });
 
     } catch (err) {

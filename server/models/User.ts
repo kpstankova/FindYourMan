@@ -12,7 +12,7 @@ export default class User extends Model {
   profile_pic?: string;
   verified?: number;
   rating?: number;
-  lastLoggedIn?: string;
+  last_logged_in?: string;
   iban: string;
 
   static tableName = "user";

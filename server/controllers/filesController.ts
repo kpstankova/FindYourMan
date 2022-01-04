@@ -4,6 +4,8 @@ import { AuthenticatedUserRequest } from '../interfaces/authenticatedRequest';
 import { Service } from '../models/Service';
 import User from '../models/User';
 import { createProfileFolder, moveFiles } from '../utils/fileUtils';
+import fs from 'fs-extra';
+import path from 'path';
 
 function storageUpload() {
     const storage = Multer.diskStorage({
@@ -65,4 +67,32 @@ const uploadServicePic = async (req: AuthenticatedUserRequest, res: express.Resp
     } 
 }
 
-export {uploadProfilePic, Upload, uploadServicePic};
+const getProfilePic = async (req: AuthenticatedUserRequest, res: express.Response) => {
+    try {
+        const id = req.params.id;
+        const profilePicPath = await (await User.query().select("*").where("user_id", id).first()).profile_pic;
+        if (profilePicPath === null) {
+            return res.status(400).send("No image found");
+        }
+        return res.status(200).json(profilePicPath.substring(profilePicPath.lastIndexOf('/') + 1));
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
+}
+
+const getServicePic = async (req: AuthenticatedUserRequest, res: express.Response) => {
+    try {
+        const id = req.params.id;
+        const profilePicPath = await (await Service.query().select("*").where("service_id", id).first()).picture;
+        if (profilePicPath === null) {
+            return res.status(400).send("No image found");
+        }
+        return res.status(200).json(profilePicPath.substring(profilePicPath.lastIndexOf('/') + 1));
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
+}
+
+export {uploadProfilePic, Upload, uploadServicePic, getProfilePic, getServicePic};
