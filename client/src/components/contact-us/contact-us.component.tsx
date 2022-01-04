@@ -4,23 +4,31 @@ import { dialogStyles, ContactUsComponentProp } from './contact-us.types';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { StoreState } from '../../redux/root-reducer';
-import {selectContactUsModal} from '../../redux/modal-visibility/modal.selectors';
 import Backdrop from '@material-ui/core/Backdrop';
 import { connect } from 'react-redux';
 import './contact-us.styles.scss'
+import { selectContactUsModal } from '../../redux/modal-visibility/modal.selectors';
+import { IResetToggles, TModalReducerActions } from '../../redux/modal-visibility/modal.actions';
+import { Dispatch } from "redux";
+import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
 
 
 
 const ContactUsComponent: React.FC<ContactUsComponentProp> = ({...props}) => {
-    const { toggleContactUsModal} = props;
+    const { toggleContactUsModal, resetTogglesModalAction} = props;
     
     const styles = dialogStyles();
+
+    const handleClose = () => {
+        resetTogglesModalAction();
+    }
  
     return (
             <Dialog
                 classes={{ root: styles.dialogRoot, paper: styles.dialogPaper }}
                 closeAfterTransition={true}
-                open={toggleContactUsModal}
+                onClose={handleClose}
+                open={toggleContactUsModal!}
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
                 BackdropComponent={Backdrop}
@@ -50,7 +58,13 @@ const mapStateToProps = (state: StoreState): { toggleContactUsModal: boolean } =
     return {
         toggleContactUsModal: selectContactUsModal(state),
     }
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
+    return {
+        resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.RESET_TOGGLES_MODAL })
+    }
 }
 
 
-export default connect(mapStateToProps, null)(ContactUsComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactUsComponent);
