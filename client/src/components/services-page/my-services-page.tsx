@@ -16,13 +16,18 @@ import './service-main-page.styles.scss';
 const MyServicesPage: React.FC<MyServicesPageProps> = ({ ...props }) => {
     const { currentUser, redirectToAddService } = props;
     const [services, setServices] = useState<ServiceItem[]>([]);
+    const token = localStorage.getItem('accessToken');
 
     const getAllServices = () => {
         return axios
             .post(`http://localhost:3001/service/getByUser`, {
-                
-                    contributor_id: currentUser.id
-                }, {headers: headers
+
+                contributor_id: currentUser.id
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
             })
             .then((response: any) => {
                 console.log(response.data)
@@ -54,7 +59,7 @@ const MyServicesPage: React.FC<MyServicesPageProps> = ({ ...props }) => {
                 <h1 className='title'>My services</h1>
                 {services && services.length > 0 ?
                     services.map((service: ServiceItem) => {
-                        return <ServiceItemComponent serviceItem={service} />
+                        return <ServiceItemComponent serviceItem={service} isInDetails={false}/>
                     })
                     :
                     <div>Nothing to show</div>

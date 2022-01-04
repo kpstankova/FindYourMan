@@ -10,13 +10,16 @@ import { connect } from 'react-redux';
 import { onboardingForm } from '../onboarding/onboarding.types';
 import { AddServiceComponentProps, AddServiceInput, validationSchema } from './my-services.types';
 import ServiceImageUploader from './service-image-uploader'
-import { headers } from '../register/register-modal.types';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { StoreState } from '../../redux/root-reducer';
 import { User } from '../../redux/user/user.types';
+import { IClearServiceImage, TServicesReducerAction } from '../../redux/services/services.actions';
+import { ServicesActionTypes } from '../../redux/services/services.types';
+import { DroppedFile } from '../../redux/onboarding/onboarding.types';
+import { selectServiceImage } from '../../redux/services/services.selectors';
 
 const AddServiceComponent: React.FC<AddServiceComponentProps> = ({ ...props }) => {
-    const { currentUser, redirectToServicePage } = props;
+    const { currentUser, serviceImage, redirectToServicePage, clearServiceImage } = props;
     const styles = onboardingForm();
     const [response, setResponseState] = useState<string>("");
     const token = localStorage.getItem('accessToken');
@@ -32,7 +35,10 @@ const AddServiceComponent: React.FC<AddServiceComponentProps> = ({ ...props }) =
                 description: service.description,
                 contributor_id: currentUser.id, 
                 publish_date: new Date()
-            }, { headers: headers })
+            }, { headers: { 
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token 
+            } })
             .then((response: any) => {
                 redirectToServicePage();
                 return response.data;
@@ -40,6 +46,20 @@ const AddServiceComponent: React.FC<AddServiceComponentProps> = ({ ...props }) =
             .catch((error: any) => {
                 setResponseState(error);
             })
+    }
+
+    const handleServiceImageUpload = () => {
+        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+        let fd = new FormData();
+        fd.append('file', serviceImage!.fileWithMeta.file)
+        return axios.post(`http://localhost:3001/files/profilePic?id=${currentUser.id}`, fd, config);
+    };
+
+    const handleAddButton = (service: AddServiceInput) => {
+        handleAddService(service);
+        if (serviceImage) {
+            handleServiceImageUpload();
+        }
     }
 
     const { handleSubmit, handleChange, values, errors } = useFormik({
@@ -55,7 +75,8 @@ const AddServiceComponent: React.FC<AddServiceComponentProps> = ({ ...props }) =
         validationSchema,
         onSubmit: (values) => {
             const { nameOfService, category, price, duration, city, description } = values;
-            handleAddService(values);
+            handleAddButton(values);
+            clearServiceImage();
         }
     })
 
@@ -211,15 +232,17 @@ const AddServiceComponent: React.FC<AddServiceComponentProps> = ({ ...props }) =
     );
 };
 
-const mapStateToProps = (state: StoreState): { currentUser: User } => {
+const mapStateToProps = (state: StoreState): { currentUser: User, serviceImage: DroppedFile | null } => {
     return {
+        serviceImage: selectServiceImage(state),
         currentUser: selectCurrentUser(state),
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<CallHistoryMethodAction>) => {
+const mapDispatchToProps = (dispatch: Dispatch< TServicesReducerAction | CallHistoryMethodAction>) => {
     return {
         redirectToServicePage: () => dispatch(push('/my-services')),
+        clearServiceImage: () => dispatch<IClearServiceImage>({type: ServicesActionTypes.CLEAR_SERVICE_IMAGE})
     }
 }
 

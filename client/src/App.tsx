@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import './App.scss';
 import { History } from "history";
 import { persistedStore, store } from './redux/store';
@@ -13,8 +13,16 @@ import MyProfileComponent from './components/my-profile/my-profile.component'
 import { PersistGate } from 'redux-persist/integration/react';
 import AddServiceComponent from  './components/services-page/add-service.component'
 import ServicesMainPage from './components/services-page/services-main-page';
+import ServiceDetailsPage from './components/service-details/service-details.component';
+import CartPageComponent from './components/cart/cart-page.component';
 interface AppProps {
   history: History;
+}
+
+function renderContentDetailsPage(routeProps: any) {
+  return <React.Fragment>
+      <ServiceDetailsPage routeParams={routeProps.match.params} />
+  </React.Fragment>;
 }
 
 const App = (props: AppProps) => {
@@ -35,6 +43,10 @@ const App = (props: AppProps) => {
               <Route exact={true} path='/my-profile' component={MyProfileComponent} />
               <Route exact={true} path ='/add-new-service' component={AddServiceComponent} />
               <Route exact={true} path='/services' component={ServicesMainPage} />
+              <Route exact={true} path='/cart' component={CartPageComponent} />
+              <Route path={'/service/:id/category/:category'} render={(routeProps: RouteComponentProps) =>
+                            renderContentDetailsPage({ ...routeProps })} exact={true}
+                        />
             </Switch>
           </ConnectedRouter>
         </div>

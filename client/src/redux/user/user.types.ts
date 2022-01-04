@@ -20,6 +20,7 @@ export interface RegisterState {
     password: string;
     confirmPassword: string;
     role: string;
+    iban: string;
 }
 
 export interface LoginState {
