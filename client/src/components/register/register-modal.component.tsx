@@ -20,8 +20,8 @@ import { push, CallHistoryMethodAction } from "connected-react-router";
 
 
 const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
-    const { resetTogglesModalAction, toggleLoginModalAction, registerUserSuccessAction, registerUserErrorAction, toggleRegisterModal, registerRole, 
-        loginSuccessAction, loginFailureAction, redirectToOnboarding} = props;
+    const { resetTogglesModalAction, toggleLoginModalAction, registerUserSuccessAction, registerUserErrorAction, toggleRegisterModal, registerRole,
+        loginSuccessAction, loginFailureAction, redirectToOnboarding } = props;
     const [response, setResponseState] = useState<string>("");
 
     const styles = dialogStyles();
@@ -41,7 +41,7 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
                 password: newUser.password,
             }, { headers: headers })
             .then((response: any) => {
-                loginSuccessAction({id: response.data.id, email: response.data.email, role: response.data.role});
+                loginSuccessAction({ id: response.data.id, email: response.data.email, role: response.data.role });
                 localStorage.setItem('accessToken', response.data.accessToken);
             })
             .catch((error: any) => {
@@ -55,11 +55,12 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
             .post(`http://localhost:3001/auth/register`, {
                 email: newUser.email,
                 password: newUser.password,
-                role: registerRole
+                role: registerRole,
+                iban: newUser.iban
             }, { headers: headers })
             .then((response: any) => {
                 registerUserSuccessAction();
-                handleLogin({email: newUser.email, password: newUser.password});
+                handleLogin({ email: newUser.email, password: newUser.password });
                 redirectToOnboarding();
             })
             .catch((error: any) => {
@@ -74,12 +75,13 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
             email: '',
             password: '',
             confirmPassword: '',
-            role: registerRole
+            role: registerRole,
+            iban: ''
         },
         validateOnBlur: true,
         validationSchema,
         onSubmit: (values) => {
-            const { name, email, password, role } = values;
+            const { name, email, password, role, iban } = values;
             handleRegister(values);
             handleClose();
             resetTogglesModalAction();
@@ -163,6 +165,24 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
                                         width: '200px'
                                     }
                                 }} />
+                            <TextField
+                                classes={{ root: styles.textFieldRoot }}
+                                type='text'
+                                autoComplete='off'
+                                placeholder="IBAN"
+                                hiddenLabel={true}
+                                name='iban'
+                                variant='standard'
+                                value={values.iban} onChange={handleChange} error={errors.iban === ""}
+                                helperText={errors.iban ? errors.iban : null}
+                                InputLabelProps={{ shrink: false }}
+                                FormHelperTextProps={{
+                                    style: {
+                                        color: 'red',
+                                        fontSize: '10px',
+                                        width: '200px'
+                                    }
+                                }} />
                             <button
                                 className='submit-button'
                                 type='submit'>
@@ -181,7 +201,7 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
     );
 }
 
-const mapStateToProps = (state: StoreState): { toggleRegisterModal: boolean, registerRole: string} => {
+const mapStateToProps = (state: StoreState): { toggleRegisterModal: boolean, registerRole: string } => {
     return {
         toggleRegisterModal: selectRegisterModal(state),
         registerRole: selectRegisterRole(state)
@@ -193,9 +213,9 @@ const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReduc
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.RESET_TOGGLES_MODAL }),
         toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.TOGGLE_LOGIN_MODAL }),
         registerUserSuccessAction: () => dispatch<IRegisterSuccess>({ type: UserActionTypes.REGISTER_SUCCESS }),
-        registerUserErrorAction: (data:  string) => dispatch<IRegisterFailure>({ type: UserActionTypes.REGISTER_FAILED, data: data}),
-        loginSuccessAction: (data: User) => dispatch<ILoginSuccess>({type: UserActionTypes.LOGIN_SUCCESS, data: data}),
-        loginFailureAction: (data: string) => dispatch<ILoginFailure>({ type: UserActionTypes.LOGIN_FAILED, data: data}),
+        registerUserErrorAction: (data: string) => dispatch<IRegisterFailure>({ type: UserActionTypes.REGISTER_FAILED, data: data }),
+        loginSuccessAction: (data: User) => dispatch<ILoginSuccess>({ type: UserActionTypes.LOGIN_SUCCESS, data: data }),
+        loginFailureAction: (data: string) => dispatch<ILoginFailure>({ type: UserActionTypes.LOGIN_FAILED, data: data }),
         redirectToOnboarding: () => dispatch(push('/onboarding')),
     }
 }

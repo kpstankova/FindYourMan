@@ -12,9 +12,11 @@ import { push, CallHistoryMethodAction } from "connected-react-router";
 import './navbar.styles.scss'
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { StoreState } from '../../redux/root-reducer';
+import { IClearProfileImage, TOnboardingReducerAction } from '../../redux/onboarding/onboarding.actions';
+import { OnboardingActionTypes } from '../../redux/onboarding/onboarding.types';
 
 const UserNavigationBarComponent: React.FC<UserNavigationProps> = ({ ...props }) => {
-    const { currentUser, logoutUserSuccessAction, logoutUserErrorAction, redirectToHome, redirectToMyProfile } = props;
+    const { currentUser, logoutUserSuccessAction, logoutUserErrorAction, redirectToHome, redirectToMyProfile, clearProfileImageAction } = props;
     const classes = useStyles();
     const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorElement);
@@ -38,6 +40,7 @@ const UserNavigationBarComponent: React.FC<UserNavigationProps> = ({ ...props })
 				logoutUserSuccessAction();
 				localStorage.clear();
 				redirectToHome();
+                clearProfileImageAction();
                 return response.data;
 			})
 			.catch((error: any) => {
@@ -72,6 +75,9 @@ const UserNavigationBarComponent: React.FC<UserNavigationProps> = ({ ...props })
                 <MenuItem>
                     <RouterLink className="nav-link-option" to="/" >History of orders</RouterLink>
                 </MenuItem>
+                <MenuItem>
+                    <RouterLink className="nav-link-option" to="/cart" >Cart</RouterLink>
+                </MenuItem>
                 {
                     currentUser && currentUser.role !== 'client' ? 
                     <MenuItem>
@@ -90,12 +96,13 @@ const mapStateToProps = (state: StoreState): { currentUser: User } => {
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<TUserReducerActions | CallHistoryMethodAction>) => {
+const mapDispatchToProps = (dispatch: Dispatch<TUserReducerActions | TOnboardingReducerAction | CallHistoryMethodAction>) => {
     return {
         logoutUserSuccessAction: () => dispatch<ILogoutSuccess>({type: UserActionTypes.LOGOUT_SUCESS}),
         logoutUserErrorAction: (data: string) => dispatch<ILogoutFailure>({ type: UserActionTypes.LOGOUT_FAILED, data: data}),
         redirectToHome: () => dispatch(push('/')),
-        redirectToMyProfile: () => dispatch(push('/my-profile'))
+        redirectToMyProfile: () => dispatch(push('/my-profile')),
+        clearProfileImageAction: () =>  dispatch<IClearProfileImage>({ type: OnboardingActionTypes.CLEAR_PROFILE_IMAGE})
     }
 }
 

@@ -10,11 +10,14 @@ export interface MyServicesPageProps {
 
 export interface AddServiceComponentProps {
     currentUser: User;
+    serviceImage: DroppedFile | null;
     redirectToServicePage: () => void;
+    clearServiceImage: () => void;
 }
 
 export interface ServiceImageUploaderprops {
-    profileImage: DroppedFile | null;
+    serviceImage: DroppedFile | null;
+    addServiceImageAction: (data: DroppedFile) => void;
 }
 
 export const validationSchema = Yup.object({
@@ -36,6 +39,7 @@ export interface AddServiceInput {
 };
 
 export interface ServiceItem {
+    service_id: number;
     picture: string;
     name: string;
     category: string;
@@ -44,11 +48,16 @@ export interface ServiceItem {
     city: string;
     description: string;
     rating: number;
-    publishDate: string;
+    publish_date: string;
 };
 
 export interface ServiceItemComponentProps {
+    currentUser: User;
     serviceItem: ServiceItem;
+    isInDetails: boolean;
+    setServiceDetailsState: (item: ServiceItem) => void;
+    redirectToServiceDetails: (path: string) => void;
+    addToCartAction: (data: ServiceItem) => void;
 };
 
 
