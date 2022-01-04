@@ -24,4 +24,10 @@ export interface IToggleRegisterAsRole extends IModalBaseAction{
     type:ModalActionTypes.TOGGLE_REGISTER_AS_ROLE_MODAL
 }
 
-export type TModalReducerActions =IToggleRegisterAsRole | IToggleRegister | IToggleLogin | IToggleForgotPassword | IResetToggles;
+export interface IToggleContactUs extends IModalBaseAction{
+    type:ModalActionTypes.TOGGLE_CONTACT_US_MODAL
+}
+
+
+
+export type TModalReducerActions =IToggleRegisterAsRole | IToggleRegister | IToggleLogin | IToggleForgotPassword | IResetToggles | IToggleContactUs;

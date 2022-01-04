@@ -1,0 +1,79 @@
+@import '../../assets/globalVariables.scss';
+.contact-us {
+    width: auto;
+    display: flex;
+    height: auto;
+    flex-direction: column;
+    border-radius: 20px;
+    background-color: white;
+    text-align: center;
+    .title {
+        // margin: 30px 0;
+        color: $brandColor;
+        font-family: "Roboto";
+    }
+    .text1 {
+        color: black;
+        font-family: "Roboto";
+        width: 253px;
+        height: 26px;
+    }
+    .text2 {
+        color: black;
+        font-family: "Roboto";
+        top: 490px;
+        left: 936px;
+        width: 15px;
+        height: 21px;
+    }
+    .text3 {
+        color: black;
+        font-family: "Roboto";
+        width: 161px;
+        height: 26px;
+    }
+    .submit-button {
+        width: 200px;
+        height: 35px;
+        letter-spacing: 0.5px;
+        line-height: 35px;
+        padding: 0 20px 0 20px;
+        background-color: $brandColor;
+        color: white;
+        font-family: 'Roboto';
+        border-radius: 25px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        margin: 10px auto;
+        border: none;
+    }
+}
+
+.submit-button:hover {
+    color: black;
+    box-shadow: 0 14px 9px 0 rgba(0, 0, 0, 0.24), 0 15px 22px rgba(0, 0, 0, 0.19);
+    background-color: $brandColor;
+}
+
+.contact-us-modal {
+    width: 450px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .close-button-contact {
+        border: none;
+        outline: none;
+        font-size: 1.3rem;
+        width: 30px;
+        margin-left: auto;
+        margin-right: 20px;
+        margin-top: 30px;
+        background: white;
+        cursor: pointer;
+        .icon-button-login {
+            color: $brandColor;
+        }
+    }
+}
