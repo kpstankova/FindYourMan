@@ -10,12 +10,17 @@ import CloseIcon from '@material-ui/icons/Close';
 const ServicesMainPage = () => {
     const [services, setServices] = useState<ServiceItem[]>([]);
     const [searchValue, setSearchValue] = useState<string>("");
+    const token = localStorage.getItem('accessToken');
 
     const classes = useStyles();
 
     const getAllServices = () => {
         return axios
-            .get(`http://localhost:3001/service/`)
+            .get(`http://localhost:3001/service/`, {
+                'headers': { 
+                    Authorization: 'Bearer ' + token 
+                }
+            })
             .then((response: any) => {
                 console.log(response.data)
                 setServices(response.data);
@@ -95,16 +100,16 @@ const ServicesMainPage = () => {
                 </Box>
             </div>
             <Box sx={{
-                width: '1300px',
+                width: '1800px',
                 backgroundColor: '#FFFFFF',
                 opacity: 1,
                 marginTop: '5%',
                 border: '3px solid #F5F8FD',
-                marginLeft: '2%'
+                marginLeft: '5%'
             }}>
                 {services && services.length > 0 ?
                     services.map((service: ServiceItem) => {
-                        return <ServiceItemComponent serviceItem={service} />
+                        return <ServiceItemComponent serviceItem={service} isInDetails={false}/>
                     })
                     :
                     <div>Nothing to show</div>

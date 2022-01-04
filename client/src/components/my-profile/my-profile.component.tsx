@@ -9,9 +9,14 @@ import { push, CallHistoryMethodAction } from "connected-react-router";
 import { Dispatch } from "redux";
 import { connect } from 'react-redux';
 import { MyProfileComponentProps, onboardingForm, validationSchema } from './my-profile.types';
+import { DroppedFile } from '../../redux/onboarding/onboarding.types';
+import { User } from '../../redux/user/user.types';
+import { StoreState } from '../../redux/root-reducer';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { selectProfileImage } from '../../redux/onboarding/onboarding.selectors';
 
 const MyProfileComponent: React.FC<MyProfileComponentProps> = ({ ...props }) => {
-    const { redirectToMainPage } = props;
+    const { currentUser, profileImage, redirectToMainPage } = props;
     const styles = onboardingForm();
     const [response, setResponseState] = useState<string>("");
     const token = localStorage.getItem('accessToken');
@@ -33,6 +38,20 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({ ...props }) => 
             });
     };
 
+    const handleProfileImageUpload = () => {
+        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+        let fd = new FormData();
+        fd.append('file', profileImage!.fileWithMeta.file)
+        return axios.post(`http://localhost:3001/files/profilePic?id=${currentUser.id}`, fd, config);
+    };
+
+    const handleEditButton = (name: string, address: string, vatNumber: string, phoneNumber: string) => {
+        handleAdditionalInfo(name, address, vatNumber, phoneNumber);
+        if (profileImage) {
+            handleProfileImageUpload();
+        }
+    }
+
     const { handleSubmit, handleChange, values, errors } = useFormik({
         initialValues: {
             name: '',
@@ -45,8 +64,7 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({ ...props }) => 
         onSubmit: (values) => {
             const { name, address, vatNumber, phoneNumber } = values;
 
-            handleAdditionalInfo(name, address, vatNumber, phoneNumber);
-
+            handleEditButton(name, address, vatNumber, phoneNumber);
         }
     })
 
@@ -162,10 +180,17 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({ ...props }) => 
     );
 };
 
+const mapStateToProps = (state: StoreState): { profileImage: DroppedFile | null, currentUser: User } => {
+    return {
+        profileImage: selectProfileImage(state),
+        currentUser: selectCurrentUser(state),
+    }
+}
+
 const mapDispatchToProps = (dispatch: Dispatch<CallHistoryMethodAction>) => {
     return {
         redirectToMainPage: () => dispatch(push('/my-services')),
     }
 }
 
-export default connect(null, mapDispatchToProps)(MyProfileComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(MyProfileComponent);

@@ -1,0 +1,26 @@
+.cart-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    .submit-button {
+        width: 100px;
+        letter-spacing: 0.5px;
+        line-height: 35px;
+        background-color: #5fa6ff;
+        color: white;
+        font-family: "Roboto";
+        border-radius: 25px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        margin: 10px auto;
+        border: none;
+        font-size: 1rem;
+    }
+}

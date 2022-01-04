@@ -63,6 +63,7 @@ export const validationSchema = Yup.object({
             "The password must be the same"
         )
     }),
+    iban: Yup.string().required('iban is required')
 });
 
 export const headers = {

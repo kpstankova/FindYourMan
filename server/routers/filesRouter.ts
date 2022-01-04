@@ -5,9 +5,9 @@ import authenticateToken from '../middleware/authenticateToken';
 
 const filesRouter = express.Router();
 
-filesRouter.post('/profilePic',authenticateToken , Upload.single('file'), uploadProfilePic);
-filesRouter.post('/servicePic',authenticateToken , Upload.single('file'), uploadServicePic);
 filesRouter.get('/getProfilePic/:id', authenticateToken, getProfilePic);
 filesRouter.get('/getServicePic/:id', authenticateToken, getServicePic);
+filesRouter.post('/profilePic' , Upload.single('file'), uploadProfilePic);
+filesRouter.post('/servicePic' , Upload.single('file'), uploadServicePic);
 
 export default filesRouter;

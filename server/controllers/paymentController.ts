@@ -10,8 +10,8 @@ const stripe = new Stripe(
 
 const payment = async (req: PaymentRequest, res: Response) => {
   const session = await stripe.checkout.sessions.create({
-    success_url: "http://localhost:3000/payment/success",
-    cancel_url: "http://localhost:3000/payment/cancel",
+    success_url: "http://localhost:3001/payment/success",
+    cancel_url: "http://localhost:3001/payment/cancel",
     payment_method_types: ["card"],
     line_items: req.services.map((service) => {
       return {

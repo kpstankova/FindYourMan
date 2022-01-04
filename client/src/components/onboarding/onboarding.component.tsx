@@ -9,9 +9,14 @@ import axios from 'axios';
 import { push, CallHistoryMethodAction } from "connected-react-router";
 import { Dispatch } from "redux";
 import { connect } from 'react-redux';
+import { StoreState } from '../../redux/root-reducer';
+import { DroppedFile } from '../../redux/onboarding/onboarding.types';
+import { selectProfileImage } from '../../redux/onboarding/onboarding.selectors';
+import { User } from '../../redux/user/user.types';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 const OnboardingPageComponent: React.FC<OnboardingComponentProps> = ({ ...props }) => {
-    const { redirectToMainPage } = props;
+    const { currentUser, profileImage, redirectToMainPage } = props;
     const styles = onboardingForm();
     const [response, setResponseState] = useState<string>("");
     const token = localStorage.getItem('accessToken');
@@ -33,6 +38,20 @@ const OnboardingPageComponent: React.FC<OnboardingComponentProps> = ({ ...props 
             });
     };
 
+    const handleProfileImageUpload = () => {
+        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+        let fd = new FormData();
+        fd.append('file', profileImage!.fileWithMeta.file)
+        return axios.post(`http://localhost:3001/files/profilePic?id=${currentUser.id}`, fd, config);
+    };
+
+    const handleGetStartedButton = (name: string, address: string, vatNumber: string, phoneNumber: string) => {
+        handleAdditionalInfo(name, address, vatNumber, phoneNumber);
+        if (profileImage) {
+            handleProfileImageUpload();
+        }
+    }
+
     const { handleSubmit, handleChange, values, errors } = useFormik({
         initialValues: {
             name: '',
@@ -45,7 +64,7 @@ const OnboardingPageComponent: React.FC<OnboardingComponentProps> = ({ ...props 
         onSubmit: (values) => {
             const { name, address, vatNumber, phoneNumber } = values;
 
-            handleAdditionalInfo(name, address, vatNumber, phoneNumber);
+            handleGetStartedButton(name, address, vatNumber, phoneNumber);
 
         }
     })
@@ -151,7 +170,7 @@ const OnboardingPageComponent: React.FC<OnboardingComponentProps> = ({ ...props 
                                     }
                                 }} />
                         </form>
-                        <button className='submit-button' onClick={(e: any) => handleSubmit(e)}>
+                        <button className='submit-button' type='submit' onClick={(e: any) => handleSubmit(e)}>
                             Let's get started!
                         </button>
                     </div>
@@ -162,10 +181,17 @@ const OnboardingPageComponent: React.FC<OnboardingComponentProps> = ({ ...props 
     );
 };
 
+const mapStateToProps = (state: StoreState): { profileImage: DroppedFile | null, currentUser: User } => {
+    return {
+        profileImage: selectProfileImage(state),
+        currentUser: selectCurrentUser(state),
+    }
+}
+
 const mapDispatchToProps = (dispatch: Dispatch<CallHistoryMethodAction>) => {
     return {
         redirectToMainPage: () => dispatch(push('/services')),
     }
 }
 
-export default connect(null, mapDispatchToProps)(OnboardingPageComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(OnboardingPageComponent);

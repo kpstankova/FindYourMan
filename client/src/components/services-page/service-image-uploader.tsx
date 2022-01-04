@@ -3,15 +3,16 @@ import Dropzone, { ILayoutProps, IFileWithMeta, IPreviewProps } from 'react-drop
 import '../onboarding/profile-image-uploader.styles.scss';
 import Image from 'react-async-image';
 import { StoreState } from '../../redux/root-reducer';
-import { DroppedFile, OnboardingActionTypes } from '../../redux/onboarding/onboarding.types';
-import { selectProfileImage } from '../../redux/onboarding/onboarding.selectors';
-import { IAddProfileImage, TOnboardingReducerAction } from '../../redux/onboarding/onboarding.actions';
+import { DroppedFile } from '../../redux/onboarding/onboarding.types';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
 import { ServiceImageUploaderprops } from './my-services.types';
+import { selectServiceImage } from '../../redux/services/services.selectors';
+import { IAddServiceImage, TServicesReducerAction } from '../../redux/services/services.actions';
+import { ServicesActionTypes } from '../../redux/services/services.types';
 
 const ServiceImageUploader: React.FC<ServiceImageUploaderprops> = ({ ...props }) => {
-    const { profileImage } = props;
+    const { serviceImage, addServiceImageAction } = props;
     const dropzoneLabel = "Add images"
     const urls = new WeakMap();
 
@@ -41,9 +42,9 @@ const ServiceImageUploader: React.FC<ServiceImageUploaderprops> = ({ ...props })
                         ?
                         previews
                         :
-                        (profileImage && profileImage.fileWithMeta ?
+                        (serviceImage && serviceImage.fileWithMeta ?
                             <div className="preview-box">
-                                <Image src={getBlobUrl(profileImage.fileWithMeta.file)} className="image"
+                                <Image src={getBlobUrl(serviceImage.fileWithMeta.file)} className="image"
                                     loading='auto' placeholder={<div className="placeholder">Failed to load profile image</div>}
                                 />
                             </div>
@@ -72,7 +73,7 @@ const ServiceImageUploader: React.FC<ServiceImageUploaderprops> = ({ ...props })
                 fileWithMeta: file,
                 fileObject: file.file.name
             };
-            // addProfileImageAction(droppedFile);
+            addServiceImageAction(droppedFile);
         }
     }
 
@@ -83,8 +84,8 @@ const ServiceImageUploader: React.FC<ServiceImageUploaderprops> = ({ ...props })
             onChangeStatus={onChangeStatus}
             PreviewComponent={Preview}
             inputContent={dropzoneLabel}
-            maxFiles={5}
-            multiple={true}
+            maxFiles={1}
+            multiple={false}
             canCancel={true}
             classNames={{
                 dropzone: 'dropzone-container',
@@ -94,15 +95,15 @@ const ServiceImageUploader: React.FC<ServiceImageUploaderprops> = ({ ...props })
     );
 };
 
-const mapStateToProps = (state: StoreState): { profileImage: DroppedFile | null } => {
+const mapStateToProps = (state: StoreState): { serviceImage: DroppedFile | null } => {
     return {
-        profileImage: selectProfileImage(state)
+        serviceImage: selectServiceImage(state)
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<TOnboardingReducerAction>) => {
+const mapDispatchToProps = (dispatch: Dispatch<TServicesReducerAction>) => {
     return {
-        addProfileImageAction: (data: any) => dispatch<IAddProfileImage>({ type: OnboardingActionTypes.ADD_PROFILE_IMAGE, data: data })
+        addServiceImageAction: (data: any) => dispatch<IAddServiceImage>({ type: ServicesActionTypes.ADD_SERVICE_IMAGE, data: data })
     }
 }
 

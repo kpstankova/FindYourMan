@@ -13,6 +13,9 @@ export const onboardingReducer = (state = InitialState, action: TOnboardingReduc
                 profileImage: action.data
             }
         }
+        case OnboardingActionTypes.CLEAR_PROFILE_IMAGE: {
+            return InitialState;
+        }
         default:
             return state;
     }

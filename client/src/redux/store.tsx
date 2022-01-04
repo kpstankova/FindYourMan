@@ -13,7 +13,6 @@ export const rootConfig = {
     key: 'root',
     storage: storage,
     blacklist: ['modal'],
-    whitelist: ['user']
 };
 
 export const store = createStore(
