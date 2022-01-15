@@ -15,21 +15,16 @@
     .text1 {
         color: black;
         font-family: "Roboto";
-        width: 253px;
-        height: 26px;
+        display: flex;
+        justify-content: center;
     }
     .text2 {
         color: black;
         font-family: "Roboto";
-        top: 490px;
-        left: 936px;
-        width: 15px;
-        height: 21px;
     }
     .text3 {
         color: black;
         font-family: "Roboto";
-        width: 161px;
         height: 26px;
     }
     .submit-button {

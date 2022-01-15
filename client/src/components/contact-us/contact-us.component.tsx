@@ -38,12 +38,13 @@ const ContactUsComponent: React.FC<ContactUsComponentProp> = ({...props}) => {
     
                 <Fade in={toggleContactUsModal}>
                     <div className='contact-us-modal'>
-                        <button className='close-button-contact' aria-label='google' >
+                        <button className='close-button-contact' aria-label='google'  onClick={handleClose}>
                             <FontAwesomeIcon className='icon-button-login' icon={faTimes} />
                         </button>
                         <div className='contact-us'>
                             <h1 className='title'>Contact US!</h1>
-                            <h3 className='text1'>You can send us an email at <b>FindYourMan@gmail.com</b></h3>
+                            <h3 className='text1'>You can send us an email at </h3>
+                            <h3 className='text1'>FindYourMan@gmail.com</h3>
                             <h4 className='text2'> or </h4>
                             <h3 className='text3'>You can call us at <b>1234567890</b></h3>
                             <button className='submit-button' type='submit'>Let`s have fun together!</button>
