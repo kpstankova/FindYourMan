@@ -45,7 +45,7 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
                 localStorage.setItem('accessToken', response.data.accessToken);
             })
             .catch((error: any) => {
-                setResponseState(error);
+                setResponseState(`${error}`);
                 loginFailureAction(error);
             });
     }
@@ -80,10 +80,11 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
         },
         validateOnBlur: true,
         validationSchema,
-        onSubmit: (values) => {
+        onSubmit: (values, {resetForm}) => {
             const { name, email, password, role, iban } = values;
             handleRegister(values);
             handleClose();
+            resetForm();
             resetTogglesModalAction();
         }
     })

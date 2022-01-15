@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dialog, Fade, TextField } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -11,13 +11,17 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import '../login/login.styles.scss'
-import { ForgotPasswordModalProps } from './forgot-password.types';
+import { ForgotPasswordModalProps, validationSchema } from './forgot-password.types';
 import { dialogStyles } from '../login/login.types';
+import { headers } from '../register/register-modal.types';
+import axios from 'axios';
+import { useFormik } from 'formik';
 
 const ForgotPasswordModalComponent: React.FC<ForgotPasswordModalProps> = ({ ...props }) => {
     const { toggleForgotPasswordModal, resetTogglesModalAction, toggleRegisterAsRoleModalAction, toggleLoginModalAction } = props;
 
     const styles = dialogStyles();
+    const [response, setResponseState] = useState<string>("");
 
     const handleClose = () => {
         resetTogglesModalAction();
@@ -30,6 +34,33 @@ const ForgotPasswordModalComponent: React.FC<ForgotPasswordModalProps> = ({ ...p
     const handleOpenLogin = () => {
         toggleLoginModalAction();
     }
+
+    const handleSendNewPassword = (email: string) => {
+        return axios
+            .post(`http://localhost:3001/email/forgotPassword`, {
+                to: email,
+            }, { headers: headers })
+            .then((response: any) => {
+                return response.data;
+            })
+            .catch((error: any) => {
+                setResponseState(`${error}`);
+            });
+    }
+
+    const { handleSubmit, handleChange, values, errors } = useFormik({
+        initialValues: {
+            email: ''
+        },
+        validateOnBlur: true,
+        validationSchema,
+        onSubmit: (values) => {
+            const { email } = values;
+            handleSendNewPassword(email)
+            handleClose();
+            resetTogglesModalAction();
+        }
+    })
 
     return (
         <Dialog
@@ -52,8 +83,8 @@ const ForgotPasswordModalComponent: React.FC<ForgotPasswordModalProps> = ({ ...p
                     <div className='login'>
                         <h1 className='title'>Find your Man</h1>
 
-                        {/* {state.response ? <div className='error-box'>{state.response}</div> : null} */}
-                        <form className='login-form' autoComplete='on'>
+                        {response ? <div className='error-box'>{response}</div> : null}
+                        <form className='login-form' autoComplete='on' onSubmit={handleSubmit}>
                             <TextField
                                 classes={{ root: styles.textFieldRoot }}
                                 type='email'
@@ -62,8 +93,8 @@ const ForgotPasswordModalComponent: React.FC<ForgotPasswordModalProps> = ({ ...p
                                 hiddenLabel={true}
                                 name='email'
                                 variant='standard'
-                                // value={values.email} onChange={handleChange} error={errors.email === ""}
-                                // helperText={errors.email ? errors.email : null}
+                                value={values.email} onChange={handleChange} error={errors.email === ""}
+                                helperText={errors.email ? errors.email : null}
                                 InputLabelProps={{ shrink: false }}
                                 FormHelperTextProps={{
                                     style: {
@@ -87,8 +118,6 @@ const ForgotPasswordModalComponent: React.FC<ForgotPasswordModalProps> = ({ ...p
                                     <Link className='hyperlink' to={'/'} onClick={handleOpenRegisterWrapper}>Create an account!</Link>
                                 </div>
                             </div>
-
-                            {/* {isLoading ? <LoadingSpinner /> : null} */}
                         </form>
                     </div>
                 </div>
