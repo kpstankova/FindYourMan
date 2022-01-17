@@ -44,12 +44,12 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
                 password: newUser.password,
             }, { headers: headers })
             .then((response: any) => {
-                loginSuccessAction({id: response.data.id, email: response.data.email, role: response.data.role});
+                loginSuccessAction({ id: response.data.id, email: response.data.email, role: response.data.role });
                 localStorage.setItem('accessToken', response.data.accessToken);
                 return response.data;
             })
             .catch((error: any) => {
-                setResponseState(error);
+                setResponseState(`${error}`);
                 loginFailureAction(error);
             });
     }
@@ -61,11 +61,16 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
         },
         validateOnBlur: true,
         validationSchema,
-        onSubmit: (values) => {
+        onSubmit: (values, { resetForm }) => {
             const { email, password } = values;
-            handleLogin(values);
-            handleClose();
-            resetTogglesModalAction();
+            handleLogin(values).then((response) => {
+                handleClose();
+                resetForm();
+                resetTogglesModalAction();
+            }).catch((error) => {
+                console.log(error);
+            })
+
         }
     })
 
@@ -160,7 +165,7 @@ const LoginModalComponent: React.FC<LoginModalProps> = ({ ...props }) => {
 const mapStateToProps = (state: StoreState): { toggleForgotPasswordModal: boolean, toggleLoginModal: boolean } => {
     return {
         toggleForgotPasswordModal: selectForgotPasswordModal(state),
-        toggleLoginModal: selectLoginModal(state)
+        toggleLoginModal: selectLoginModal(state),
     }
 }
 
@@ -169,8 +174,8 @@ const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReduc
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.RESET_TOGGLES_MODAL }),
         toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.TOGGLE_REGISTER_AS_ROLE_MODAL }),
         toggleForgotPasswordModalAction: () => dispatch<IToggleForgotPassword>({ type: ModalActionTypes.TOGGLE_FORGOT_PASSWORD_MODAL }),
-        loginSuccessAction: (data: User) => dispatch<ILoginSuccess>({type: UserActionTypes.LOGIN_SUCCESS, data: data}),
-        loginFailureAction: (data: string) => dispatch<ILoginFailure>({ type: UserActionTypes.LOGIN_FAILED, data: data})
+        loginSuccessAction: (data: User) => dispatch<ILoginSuccess>({ type: UserActionTypes.LOGIN_SUCCESS, data: data }),
+        loginFailureAction: (data: string) => dispatch<ILoginFailure>({ type: UserActionTypes.LOGIN_FAILED, data: data })
     }
 }
 
