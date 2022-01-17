@@ -21,13 +21,10 @@ const services = async (req: AuthenticatedUserRequest, res: Express.Response) =>
         const minPrice = req.body.minPrice != "" ? parseFloat(req.body.minPrice) : 0;
         const maxPrice = req.body.maxPrice != "" ? parseFloat(req.body.maxPrice) : Number.MAX_VALUE;
         const rating = req.body.rating != "" ? parseFloat(req.body.rating) : 0;
-        const services = await Service.query().where("name", "like", `%${req.body.name}%`).
-                                                andWhere("description", "like", `%${req.body.description}%`).
-                                                andWhere("category", "like", `%${req.body.category}%`).
-                                                andWhere("city", "like", `%${req.body.city}%`).
-                                                andWhere("contributor_id", "like", `%${req.body.contributor_id}%`).
-                                                andWhereBetween("price", [minPrice, maxPrice]).
-                                                andWhereBetween("rating", [rating, 5]);
+        const services = await Service.query().where("name", "like", `%${req.body.searchString}%`).
+                                                orWhere("description", "like", `%${req.body.searchString}%`).
+                                                orWhere("category", "like", `%${req.body.searchString}%`).
+                                                orWhere("city", "like", `%${req.body.searchString}%`);
         console.log(services);
         return services;
     } catch (err) { 

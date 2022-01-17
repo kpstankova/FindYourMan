@@ -117,4 +117,20 @@ const addOrder = async (req: AuthenticatedUserRequest, res: Response) => {
     }
 }
 
-export { addOrder, deleteOrder, updateOrder, getAllOrders, getOrder };
+const getOrdersByUserId = async (req: AuthenticatedUserRequest, res: Response) => {
+    try {
+        const result = await Order.query().select("*").where("user_id", req.params.id);
+        console.log(result);
+
+        if (!result) {
+            res.status(404).send("Orders not found");
+        }
+
+        res.status(200).json(result);
+    } catch (err) { 
+        console.log(err);
+        res.status(400).json(err);
+    }
+}
+
+export { addOrder, deleteOrder, updateOrder, getAllOrders, getOrder, getOrdersByUserId };
