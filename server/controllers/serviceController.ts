@@ -85,7 +85,11 @@ const addService = async (req: AuthenticatedUserRequest, res: Response) => {
 
         await Service.query().insert(service);
 
-        return res.status(201).json("Service added successfully.");
+        const result = await Service.query().select("*");
+        console.log(result.length);
+        console.log(result[result.length - 1]);
+
+        return res.status(201).json(result[result.length - 1]);
     } catch (err) {
         res.status(422).json("Adding new service failed:" + err);
     }
