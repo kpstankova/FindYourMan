@@ -34,6 +34,20 @@ const ServicesMainPage = () => {
         getAllServices();
     }, []);
 
+    const search = (event: any) => {
+        return axios
+            .post(`http://localhost:3001/search/all`, {
+                searchString: searchValue,
+            }, { headers: { Authorization: 'Bearer ' + token }})
+            .then((response: any) => {
+                console.log(response.data)
+                setServices(response.data);
+            })
+            .catch((error: any) => {
+                console.log(error);
+            })
+    }
+
     const handleChange = (event: any) => {
         event.preventDefault();
         const value = event.target.value;
@@ -43,8 +57,13 @@ const ServicesMainPage = () => {
 
     const onKeyPress = (event: any) => {
         if (event.keyCode === 13) {
-            // search(event);
+            search(event);
         }
+    }
+
+    const handleClear = () => {
+        setSearchValue("");
+        getAllServices();
     }
 
     return (
@@ -82,13 +101,13 @@ const ServicesMainPage = () => {
                         endAdornment={
                             searchValue !== "" ?
                                 <React.Fragment>
-                                    <IconButton type="reset" onClick={() => setSearchValue("")}
+                                    <IconButton type="reset" onClick={handleClear}
                                         sx={{ p: '10px' }} aria-label="reset" size="large">
                                         <CloseIcon />
                                     </IconButton>
                                     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                                     <IconButton type="submit"
-                                        // onClick={search}
+                                        onClick={search}
                                         sx={{ p: '10px' }} aria-label="search" size="large">
                                         <SearchIcon />
                                     </IconButton>
@@ -104,8 +123,7 @@ const ServicesMainPage = () => {
                 backgroundColor: '#FFFFFF',
                 opacity: 1,
                 marginTop: '5%',
-                border: '3px solid #F5F8FD',
-                marginLeft: '5%'
+                border: '3px solid #F5F8FD'
             }}>
                 {services && services.length > 0 ?
                     services.map((service: ServiceItem) => {

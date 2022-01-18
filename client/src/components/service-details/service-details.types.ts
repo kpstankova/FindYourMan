@@ -1,3 +1,4 @@
+import { User } from "../../redux/user/user.types";
 import { ServiceItem } from "../services-page/my-services.types";
 
 export interface ServiceDetailsPageProps {
@@ -7,6 +8,7 @@ export interface ServiceDetailsPageProps {
 
 export interface ReviewsProps {
     serviceItem?: ServiceItem;
+    reviews: Review[];
 }
 
 export interface Review {
@@ -20,4 +22,10 @@ export interface Review {
 
 export interface SingleReviewProps {
     review: Review;
+}
+
+export interface AddReviewProps {
+    currentUser?: User;
+    serviceItem?: ServiceItem;
+    getAllReviews: () => void;
 }

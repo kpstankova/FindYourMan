@@ -54,9 +54,10 @@ const ForgotPasswordModalComponent: React.FC<ForgotPasswordModalProps> = ({ ...p
         },
         validateOnBlur: true,
         validationSchema,
-        onSubmit: (values) => {
+        onSubmit: (values, {resetForm}) => {
             const { email } = values;
-            handleSendNewPassword(email)
+            handleSendNewPassword(email);
+            resetForm();
             handleClose();
             resetTogglesModalAction();
         }

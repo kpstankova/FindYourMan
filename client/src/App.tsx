@@ -15,6 +15,7 @@ import AddServiceComponent from  './components/services-page/add-service.compone
 import ServicesMainPage from './components/services-page/services-main-page';
 import ServiceDetailsPage from './components/service-details/service-details.component';
 import CartPageComponent from './components/cart/cart-page.component';
+import OrderHistoryTable from './components/order-history-table/order-history-table.component';
 interface AppProps {
   history: History;
 }
@@ -44,6 +45,7 @@ const App = (props: AppProps) => {
               <Route exact={true} path ='/add-new-service' component={AddServiceComponent} />
               <Route exact={true} path='/services' component={ServicesMainPage} />
               <Route exact={true} path='/cart' component={CartPageComponent} />
+              <Route exact={true} path='/order-history-table' component={OrderHistoryTable}/>
               <Route path={'/service/:id/category/:category'} render={(routeProps: RouteComponentProps) =>
                             renderContentDetailsPage({ ...routeProps })} exact={true}
                         />

@@ -50,7 +50,7 @@ const MyServicesPage: React.FC<MyServicesPageProps> = ({ ...props }) => {
             }
 
             <Box sx={{
-                width: '1300px',
+                width: '1800px',
                 backgroundColor: '#FFFFFF',
                 opacity: 1,
                 marginTop: '5%',

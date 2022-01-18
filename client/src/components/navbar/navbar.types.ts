@@ -15,6 +15,7 @@ export interface UserNavigationProps {
     logoutUserErrorAction: (data: string) => void;
     redirectToHome: () => void;
     redirectToMyProfile: () => void;
+    redirectToOrderHistoryTable: () => void;
     clearProfileImageAction: () => void;
 }
 

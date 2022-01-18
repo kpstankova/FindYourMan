@@ -30,13 +30,13 @@ const ServiceItemComponent: React.FC<ServiceItemComponentProps> = ({ ...props })
 
     const getImage = () => {
         return axios
-            .get(`http://localhost:3001/files/getServicePic/${currentUser!.id}`, {
+            .get(`http://localhost:3001/files/getServicePic/${serviceItem.service_id}`, {
                 'headers': { 
                     Authorization: 'Bearer ' + token 
                 }
             })
             .then((response: any) => {
-                setServiceImageUrl(response.data)
+                setServiceImageUrl(`../../../../images/servicePics/${serviceItem.service_id}/${response.data}`)
             })
             .catch((error: any) => {
                 console.log(error);
@@ -75,7 +75,7 @@ const ServiceItemComponent: React.FC<ServiceItemComponentProps> = ({ ...props })
                             <div>{`Publish date: ${serviceItem.publish_date.slice(0, 10)}`}</div>
                         </div>
                         <p>{`Category: ${serviceItem.category}`}</p>
-                        <Rating initialValue={serviceItem.rating} ratingValue={0} readonly={true} />
+                        <Rating ratingValue={serviceItem.rating} readonly={true} />
                         <p>{`Duration: ${serviceItem.duration}`}</p>
                         <p>{`Price: ${serviceItem.price}$`}</p>
                     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import cloudsImage from '../../assets/clouds.png';
 import { Box, TextField } from '@mui/material'
 import '../onboarding/onboarding.styles.scss'
@@ -8,7 +8,7 @@ import { push, CallHistoryMethodAction } from "connected-react-router";
 import { Dispatch } from "redux";
 import { connect } from 'react-redux';
 import { onboardingForm } from '../onboarding/onboarding.types';
-import { AddServiceComponentProps, AddServiceInput, validationSchema } from './my-services.types';
+import { AddServiceComponentProps, AddServiceInput, ServiceItem, validationSchema } from './my-services.types';
 import ServiceImageUploader from './service-image-uploader'
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { StoreState } from '../../redux/root-reducer';
@@ -40,26 +40,25 @@ const AddServiceComponent: React.FC<AddServiceComponentProps> = ({ ...props }) =
                 Authorization: 'Bearer ' + token 
             } })
             .then((response: any) => {
-                redirectToServicePage();
+                if (serviceImage) {
+                    handleServiceImageUpload(response.data.service_id)
+                }
                 return response.data;
             })
             .catch((error: any) => {
-                setResponseState(error);
+                setResponseState(`${error}`);
             })
     }
 
-    const handleServiceImageUpload = () => {
+    const handleServiceImageUpload = (serviceId: number) => {
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         let fd = new FormData();
         fd.append('file', serviceImage!.fileWithMeta.file)
-        return axios.post(`http://localhost:3001/files/profilePic?id=${currentUser.id}`, fd, config);
+        return axios.post(`http://localhost:3001/files/servicePic?id=${serviceId}`, fd, config);
     };
 
     const handleAddButton = (service: AddServiceInput) => {
         handleAddService(service);
-        if (serviceImage) {
-            handleServiceImageUpload();
-        }
     }
 
     const { handleSubmit, handleChange, values, errors } = useFormik({
@@ -76,10 +75,10 @@ const AddServiceComponent: React.FC<AddServiceComponentProps> = ({ ...props }) =
         onSubmit: (values) => {
             const { nameOfService, category, price, duration, city, description } = values;
             handleAddButton(values);
+            redirectToServicePage();
             clearServiceImage();
         }
-    })
-
+    });
 
     return (
         <div className='onboarding-page' style={{ backgroundImage: `url(${cloudsImage})` }}>

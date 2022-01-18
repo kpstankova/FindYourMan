@@ -86,8 +86,6 @@ const addService = async (req: AuthenticatedUserRequest, res: Response) => {
         await Service.query().insert(service);
 
         const result = await Service.query().select("*");
-        console.log(result.length);
-        console.log(result[result.length - 1]);
 
         return res.status(201).json(result[result.length - 1]);
     } catch (err) {

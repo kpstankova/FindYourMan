@@ -16,7 +16,7 @@ import { IClearProfileImage, TOnboardingReducerAction } from '../../redux/onboar
 import { OnboardingActionTypes } from '../../redux/onboarding/onboarding.types';
 
 const UserNavigationBarComponent: React.FC<UserNavigationProps> = ({ ...props }) => {
-    const { currentUser, logoutUserSuccessAction, logoutUserErrorAction, redirectToHome, redirectToMyProfile, clearProfileImageAction } = props;
+    const { currentUser, logoutUserSuccessAction, logoutUserErrorAction, redirectToHome, redirectToMyProfile, clearProfileImageAction, redirectToOrderHistoryTable } = props;
     const classes = useStyles();
     const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorElement);
@@ -72,9 +72,9 @@ const UserNavigationBarComponent: React.FC<UserNavigationProps> = ({ ...props })
                 <MenuItem className="nav-link-option" onClick={() => redirectToMyProfile()} >
                     My profile
                 </MenuItem>
-                <MenuItem>
-                    <RouterLink className="nav-link-option" to="/" >History of orders</RouterLink>
-                </MenuItem>
+                {/* <MenuItem>
+                    <RouterLink className="nav-link-option" to="/order-history-table" >History of orders</RouterLink>
+                </MenuItem> */}
                 <MenuItem>
                     <RouterLink className="nav-link-option" to="/cart" >Cart</RouterLink>
                 </MenuItem>
@@ -102,6 +102,7 @@ const mapDispatchToProps = (dispatch: Dispatch<TUserReducerActions | TOnboarding
         logoutUserErrorAction: (data: string) => dispatch<ILogoutFailure>({ type: UserActionTypes.LOGOUT_FAILED, data: data}),
         redirectToHome: () => dispatch(push('/')),
         redirectToMyProfile: () => dispatch(push('/my-profile')),
+        redirectToOrderHistoryTable: () => dispatch(push('/order-history-table')),
         clearProfileImageAction: () =>  dispatch<IClearProfileImage>({ type: OnboardingActionTypes.CLEAR_PROFILE_IMAGE})
     }
 }

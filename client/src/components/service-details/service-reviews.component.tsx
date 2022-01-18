@@ -11,31 +11,11 @@ import { connect } from 'react-redux';
 
 const ReviewsComponent: React.FC<ReviewsProps> = ({ ...props }) => {
 
-    const { serviceItem } = props;
-
-    const [reviews, setReviews] = useState<Review[]>([])
-
-    const getAllReviews = () => {
-        return axios
-            .post(`http://localhost:3001/service/allReviews`, {
-                service_id: serviceItem!.service_id
-            }, { headers: headers })
-            .then((response: any) => {
-                console.log(response.data);
-                setReviews(response.data);
-            })
-            .catch((error: any) => {
-                console.log(error);
-            })
-    }
-
-    useEffect(() => {
-        getAllReviews();
-    }, []);
+    const { serviceItem, reviews } = props;
 
     return (
         <Box sx={{
-            width: '1500px',
+            width: '1700px',
             backgroundColor: '#FFFFFF',
             opacity: 1,
             margin: '2%',
