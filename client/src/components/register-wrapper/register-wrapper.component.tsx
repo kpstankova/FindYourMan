@@ -53,9 +53,9 @@ const RegisterWrapperComponent: React.FC<RegisterWrapperProps> = ({ ...props }) 
                             <button className="button-styles" value={RoleTypes.FREELANCER} onClick={handleOpenSignUp}>Freelancer</button>
                         </div>
                     </div>
-                    <div className='hyperlinks'>
+                    {/* <div className='hyperlinks'>
                         <Link className='hyperlink' to={'/'}>Read about roles</Link>
-                    </div>
+                    </div> */}
                 </div>
             </Fade>
         </Dialog>

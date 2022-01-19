@@ -1,8 +1,9 @@
 import { makeStyles } from "@material-ui/core";
 
 export interface ContactUsComponentProp {
-    toggleContactUsModal?: boolean;
+    toggleContactUsModal: boolean;
     resetTogglesModalAction: () => void;
+    toggleRegisterAsRoleModalAction: () => void;
     
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import cloudsImage from '../../assets/clouds.png';
 import { Box, TextField } from '@mui/material'
 import '../onboarding/onboarding.styles.scss'
@@ -20,6 +20,26 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({ ...props }) => 
     const styles = onboardingForm();
     const [response, setResponseState] = useState<string>("");
     const token = localStorage.getItem('accessToken');
+    const [user, setUser] = useState<User>();
+
+    const getUserById = () => {
+        return axios
+            .get(`http://localhost:3001/auth/${currentUser.id}`, {
+                'headers': {
+                    Authorization: 'Bearer ' + token
+                }
+            })
+            .then((response: any) => {
+                setUser(response.data)
+            })
+            .catch((error: any) => {
+                console.log(error);
+            })
+    };
+
+    useEffect(() => {
+        getUserById();
+    }, [])
 
     const handleAdditionalInfo = (name: string, address: string, vatNumber: string, phoneNumber: string) => {
         return axios
@@ -54,10 +74,10 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({ ...props }) => 
 
     const { handleSubmit, handleChange, values, errors } = useFormik({
         initialValues: {
-            name: '',
-            address: '',
-            vatNumber: '',
-            phoneNumber: ''
+            name: user && user.name ? user.name : "",
+            address: user && user.address ? user.address : "",
+            vatNumber: user && user.vat ? user.vat : "",
+            phoneNumber: user && user.phone ? user.phone : ""
         },
         validateOnBlur: true,
         validationSchema,
@@ -66,8 +86,7 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({ ...props }) => 
 
             handleEditButton(name, address, vatNumber, phoneNumber);
         }
-    })
-
+    });
 
     return (
         <div className='onboarding-page' style={{ backgroundImage: `url(${cloudsImage})` }}>
@@ -97,6 +116,7 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({ ...props }) => 
                                 name='name'
                                 variant='standard'
                                 value={values.name}
+                                defaultValue={user && user.name ? user.name : ""}
                                 onChange={handleChange}
                                 error={errors.name === ""}
                                 helperText={errors.name ? errors.name : null}

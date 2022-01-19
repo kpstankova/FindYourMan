@@ -31,7 +31,7 @@ const UserNavigationBarComponent: React.FC<UserNavigationProps> = ({ ...props })
 
     const handleLogout = () => {
         const accessToken = localStorage.getItem('accessToken')
-
+        handleClose();
         return axios
 			.post(`http://localhost:3001/auth/logout`, {
 				token: accessToken
@@ -69,14 +69,17 @@ const UserNavigationBarComponent: React.FC<UserNavigationProps> = ({ ...props })
                 }}
                 onClose={handleClose}
                 TransitionComponent={Fade}>
-                <MenuItem className="nav-link-option" onClick={() => redirectToMyProfile()} >
+                <MenuItem className="nav-link-option" onClick={() => {
+                    handleClose();
+                    redirectToMyProfile();
+                }} >
                     My profile
                 </MenuItem>
                 {/* <MenuItem>
                     <RouterLink className="nav-link-option" to="/order-history-table" >History of orders</RouterLink>
                 </MenuItem> */}
                 <MenuItem>
-                    <RouterLink className="nav-link-option" to="/cart" >Cart</RouterLink>
+                    <RouterLink className="nav-link-option" to="/cart" onClick={handleClose} >Cart</RouterLink>
                 </MenuItem>
                 {
                     currentUser && currentUser.role !== 'client' ? 

@@ -8,19 +8,21 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { connect } from 'react-redux';
 import './contact-us.styles.scss'
 import { selectContactUsModal } from '../../redux/modal-visibility/modal.selectors';
-import { IResetToggles, TModalReducerActions } from '../../redux/modal-visibility/modal.actions';
+import { IResetToggles, IToggleRegisterAsRole, TModalReducerActions } from '../../redux/modal-visibility/modal.actions';
 import { Dispatch } from "redux";
 import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
 
-
-
 const ContactUsComponent: React.FC<ContactUsComponentProp> = ({...props}) => {
-    const { toggleContactUsModal, resetTogglesModalAction} = props;
+    const { toggleContactUsModal, resetTogglesModalAction, toggleRegisterAsRoleModalAction} = props;
     
     const styles = dialogStyles();
 
     const handleClose = () => {
         resetTogglesModalAction();
+    }
+
+    const handleClick = () => {
+        toggleRegisterAsRoleModalAction();
     }
  
     return (
@@ -47,7 +49,7 @@ const ContactUsComponent: React.FC<ContactUsComponentProp> = ({...props}) => {
                             <h3 className='text1'>FindYourMan@gmail.com</h3>
                             <h4 className='text2'> or </h4>
                             <h3 className='text3'>You can call us at <b>1234567890</b></h3>
-                            <button className='submit-button' type='submit'>Let`s have fun together!</button>
+                            <button className='submit-button' type='submit' onClick={handleClick}>Let`s have fun together!</button>
                         </div>
                      </div>
                 </Fade> 
@@ -63,6 +65,7 @@ const mapStateToProps = (state: StoreState): { toggleContactUsModal: boolean } =
 
 const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
     return {
+        toggleRegisterAsRoleModalAction: () => dispatch<IToggleRegisterAsRole>({ type: ModalActionTypes.TOGGLE_REGISTER_AS_ROLE_MODAL}),
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.RESET_TOGGLES_MODAL })
     }
 }

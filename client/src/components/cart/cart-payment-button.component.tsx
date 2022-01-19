@@ -2,15 +2,19 @@
 import axios from 'axios';
 import React from 'react';
 import StripeCheckout from 'react-stripe-checkout';
-import { selectTotalPrice } from '../../redux/cart/cart.selectors';
+import { selectCartItems, selectTotalPrice } from '../../redux/cart/cart.selectors';
 import { StoreState } from '../../redux/root-reducer';
 import { StripeCheckoutButtonProps } from './cart-page.types';
 import { connect } from 'react-redux';
 import logoImage from '../../assets/logo.png'
 import { headers } from '../register/register-modal.types';
+import { IClearCart, TCartReducerActions } from '../../redux/cart/cart.actions';
+import { CartActionTypes } from '../../redux/cart/cart.types';
+import { Dispatch } from "redux";
+import { ServiceItem } from '../services-page/my-services.types';
 
 const StripeCheckoutButton: React.FC<StripeCheckoutButtonProps> = ({ ...props }) => {
-    const { totalPrice } = props;
+    const { clearCart, totalPrice, cartItems } = props;
     const priceForStripe = totalPrice! * 100;
     const publishableKey = 'pk_test_51KBJB8DoDutteg47DzIdkk3hXHfVwi4PWwH0UpUerPybqWdPHhwJLWey158l2lzl5dphqifPTnx4sFxD4ZBINUvS00gIUWVHZV';
     const authToken = localStorage.getItem('accessToken');
@@ -18,15 +22,19 @@ const StripeCheckoutButton: React.FC<StripeCheckoutButtonProps> = ({ ...props })
     const onToken = (token: any) => {
         return axios
             .post(`http://localhost:3001/payment/`, {
-                token: token.id
+                // token: token.id,
+                sessionId: token.id, 
+                services: cartItems
             }, { headers: { Authorization: 'Bearer ' + authToken } }
             )
             .then((response: any) => {
                 alert("Payment was successfull!");
+                clearCart();
                 return response.data;
             })
             .catch((error: any) => {
-                alert("There was a problem with payment processing, please try again!");
+                alert("Error");
+                // clearCart();
                 console.log(error)
             })
     };
@@ -47,10 +55,17 @@ const StripeCheckoutButton: React.FC<StripeCheckoutButtonProps> = ({ ...props })
     );
 };
 
-const mapStateToProps = (state: StoreState): { totalPrice: number } => {
+const mapStateToProps = (state: StoreState): { totalPrice: number, cartItems: ServiceItem[] } => {
     return {
         totalPrice: selectTotalPrice(state),
+        cartItems: selectCartItems(state)
+    }
+};
+
+const mapDispatchToProps = (dispatch: Dispatch< TCartReducerActions>) => {
+    return {
+        clearCart: () => dispatch<IClearCart>({ type: CartActionTypes.CLEAR_CART})
     }
 }
 
-export default connect(mapStateToProps, null)(StripeCheckoutButton);
+export default connect(mapStateToProps, mapDispatchToProps)(StripeCheckoutButton);

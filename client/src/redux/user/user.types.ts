@@ -32,4 +32,8 @@ export interface User {
     id?: number;
     email: string;
     role?: string;
+    vat?: string;
+    address?: string;
+    phone?: string;
+    name?: string;
 }

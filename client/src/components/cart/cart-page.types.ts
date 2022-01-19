@@ -10,5 +10,7 @@ export interface CartItemProps {
 }
 
 export interface StripeCheckoutButtonProps {
-    totalPrice?: number;
+    totalPrice: number;
+    cartItems: ServiceItem[];
+    clearCart: () => void;
 }

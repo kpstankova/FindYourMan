@@ -60,7 +60,6 @@ export interface ServiceItemComponentProps {
     addToCartAction: (data: ServiceItem) => void;
 };
 
-
 export const useStyles = makeStyles((theme) => ({
     inputUnderline: {
         borderBottom: `2px solid #FFFFFF !important`,

@@ -13,7 +13,7 @@ const payment = async (req: PaymentRequest, res: Response) => {
     success_url: "http://localhost:3001/payment/success",
     cancel_url: "http://localhost:3001/payment/cancel",
     payment_method_types: ["card"],
-    line_items: req.services.map((service) => {
+    line_items: req.body.services.map((service: any) => {
       return {
         name: service.name,
         description: service.description,

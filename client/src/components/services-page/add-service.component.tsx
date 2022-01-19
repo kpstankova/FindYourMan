@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import cloudsImage from '../../assets/clouds.png';
-import { Box, TextField } from '@mui/material'
+import { Box, MenuItem, Select, TextField } from '@mui/material'
 import '../onboarding/onboarding.styles.scss'
 import { useFormik } from 'formik';
 import axios from 'axios';
@@ -23,7 +23,7 @@ const AddServiceComponent: React.FC<AddServiceComponentProps> = ({ ...props }) =
     const styles = onboardingForm();
     const [response, setResponseState] = useState<string>("");
     const token = localStorage.getItem('accessToken');
-
+    const categories = ["Programming", "Design", "Cooking", "Mechanics", "Maths", "Entertainment"];
     const handleAddService = (service: AddServiceInput) => {
         return axios
             .post(`http://localhost:3001/service/add`, {
@@ -33,12 +33,14 @@ const AddServiceComponent: React.FC<AddServiceComponentProps> = ({ ...props }) =
                 duration: service.duration,
                 city: service.city,
                 description: service.description,
-                contributor_id: currentUser.id, 
+                contributor_id: currentUser.id,
                 publish_date: new Date()
-            }, { headers: { 
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token 
-            } })
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            })
             .then((response: any) => {
                 if (serviceImage) {
                     handleServiceImageUpload(response.data.service_id)
@@ -238,10 +240,10 @@ const mapStateToProps = (state: StoreState): { currentUser: User, serviceImage: 
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch< TServicesReducerAction | CallHistoryMethodAction>) => {
+const mapDispatchToProps = (dispatch: Dispatch<TServicesReducerAction | CallHistoryMethodAction>) => {
     return {
         redirectToServicePage: () => dispatch(push('/my-services')),
-        clearServiceImage: () => dispatch<IClearServiceImage>({type: ServicesActionTypes.CLEAR_SERVICE_IMAGE})
+        clearServiceImage: () => dispatch<IClearServiceImage>({ type: ServicesActionTypes.CLEAR_SERVICE_IMAGE })
     }
 }
 

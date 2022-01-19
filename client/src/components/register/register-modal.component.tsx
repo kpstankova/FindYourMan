@@ -34,6 +34,19 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
         toggleLoginModalAction();
     };
 
+    const handleVerification = (email : string) => {
+        return axios
+            .post(`http://localhost:3001/email/verification`, {
+                to: email,
+            }, { headers: headers })
+            .then((response: any) => {
+                return response.data;
+            })
+            .catch((error: any) => {
+                setResponseState(`${error}`);
+            });
+    }
+
     const handleLogin = (newUser: LoginState) => {
         return axios
             .post(`http://localhost:3001/auth/login`, {
@@ -60,6 +73,7 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
             }, { headers: headers })
             .then((response: any) => {
                 registerUserSuccessAction();
+                handleVerification(newUser.email);
                 handleLogin({ email: newUser.email, password: newUser.password });
                 redirectToOnboarding();
             })
